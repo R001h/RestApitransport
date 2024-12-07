@@ -111,25 +111,32 @@ class EmployeeCreateUserView(generics.CreateAPIView):
 ############################################################################
 # Vista para listar las tareas
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from .models import Task
+from .serializers import TaskSerializer
 
 class TaskListCreateView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados
 
     def get(self, request):
+        # Filtrar tareas asignadas al usuario autenticado
         tasks = Task.objects.filter(assigned_to=request.user)
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
+        # Crear una nueva tarea asociada al usuario autenticado
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(assigned_to=request.user)
+            serializer.save(assigned_to=request.user)  # Asignar automáticamente
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
 
 class TaskDetailUpdateDeleteView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_object(self, pk):
         try:

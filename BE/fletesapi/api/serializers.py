@@ -76,16 +76,11 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 #####################################################################################
 
-
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'assigned_to', 'status']
-    
-    def validate_status(self, value):
-        if value not in dict(Task.STATUS_CHOICES):
-            raise serializers.ValidationError("Invalid status.")
-        return value
+        fields = ['id', 'title', 'description', 'status'] 
+
 
 ###########################################################################################33
 

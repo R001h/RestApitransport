@@ -33,7 +33,7 @@ CORS_ALLOW_HEADERS = [
     
 ]
 
-ALLOWED_HOSTS = ['192.168.1.81', 'localhost', '127.0.0.1', 'localhost:5173', '192.168.0.3']
+ALLOWED_HOSTS = ['192.168.1.81', 'localhost', '127.0.0.1', 'localhost:5173', '192.168.1.66', '192.168.0.3']
 
 #ALLOWED_HOSTS = []
 

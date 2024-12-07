@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { FaSearch, FaHome, FaChartBar, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import '../Style/Sidebar.css'; 
 import CrearServicios from './CrearServicios';
-import CrearTarea from './CrearTarea';
+import CrearTarea from './GestionarTareas';
 import FormConductor from './FormConductor';
 import FormEmployee from './FormEmployee';
 import FormRegister from './FormRegister';
+import TiendaServicios from './TiendaServicios';
 
 const Sidebar = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
@@ -26,6 +27,8 @@ const Sidebar = () => {
         switch (activeItem) {
             case 'CrearServicios':
                 return <CrearServicios />;
+            case 'MostrarServicios':
+                return <TiendaServicios />;
             case 'CrearTarea':
                 return <CrearTarea />;
             case 'CrearEmpleado':
@@ -65,6 +68,13 @@ const Sidebar = () => {
                         Crear Servicio
                     </li>
                     <li
+                        className={`menu-item ${activeItem === 'MostrarServicios' ? 'active' : ''}`}
+                        onClick={() => handleItemClick('MostrarServicios')}
+                    >
+                        <FaHome className="menu-icon" />
+                        Mostrar Servicio
+                    </li>
+                    <li
                         className={`menu-item ${activeItem === 'CrearTarea' ? 'active' : ''}`}
                         onClick={() => handleItemClick('CrearTarea')}
                     >
@@ -76,7 +86,7 @@ const Sidebar = () => {
                         onClick={() => handleItemClick('Servicios')}
                     >
                         <FaCog className="menu-icon" />
-                        Servicios
+                        Mostrar Tareas
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'CrearEmpleado' ? 'active' : ''}`}
@@ -86,18 +96,18 @@ const Sidebar = () => {
                         Crear Empleados
                     </li>
                     <li
+                        className={`menu-item ${activeItem === 'Register' ? 'active' : ''}`}
+                        onClick={() => handleItemClick('Register')}
+                    >
+                        <FaSignOutAlt className="menu-icon" />
+                        Crear Cliente
+                    </li>
+                    <li
                         className={`menu-item ${activeItem === 'Login' ? 'active' : ''}`}
                         onClick={() => handleItemClick('Login')}
                     >
                         <FaSignOutAlt className="menu-icon" />
                         Login
-                    </li>
-                    <li
-                        className={`menu-item ${activeItem === 'Register' ? 'active' : ''}`}
-                        onClick={() => handleItemClick('Register')}
-                    >
-                        <FaSignOutAlt className="menu-icon" />
-                        Registro
                     </li>
                 </ul>
                 <div className="dark-mode-toggle">

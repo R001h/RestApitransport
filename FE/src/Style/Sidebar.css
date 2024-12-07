@@ -1,0 +1,157 @@
+/* Sidebar Styles */
+.sidebar-container {
+    display: flex;
+    height: 100vh;
+    transition: all 0.3s ease;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar.dark-mode {
+    background-color: #333333;
+    color: white;
+}
+
+.sidebar.light-mode {
+    background-color: #ffffff;
+    color: black;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-title {
+    color: #4a90e2;
+    font-size: 20px;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 25px;
+    color: inherit;
+    cursor: pointer;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.search-input {
+    padding: 8px;
+    margin-right: 10px;
+    width: 80%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-icon {
+    color: #aaa;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.menu-item:hover {
+    background-color: #f0f0f0;
+}
+
+.menu-item.active {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.menu-icon {
+    margin-right: 10px;
+}
+
+.dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #4a90e2;
+}
+
+input:checked + .slider:before {
+    transform: translateX(14px);
+}
+
+/* Content Styles */
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f4f6f9;
+}
+
+.content.dark-mode {
+    background-color: #1a1a1a;
+    color: white;
+}
+
+.content.light-mode {
+    background-color: #f4f6f9;
+    color: black;
+}

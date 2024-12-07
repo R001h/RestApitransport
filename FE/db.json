@@ -1,0 +1,19 @@
+{
+  "users": [
+    {
+      "id": "462d",
+      "Correo": "byron@gmail.com",
+      "Contraseña": "2006"
+    }
+  ],
+  "materiales": [],
+  "clientes": [
+    {
+      "id": "",
+      "Name": "",
+      "Email": "",
+      "Password": "",
+      "Role": ""
+    }
+  ]
+}

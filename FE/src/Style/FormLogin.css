@@ -1,0 +1,184 @@
+.body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f0f4fd 0%, #dff1f9 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 5s ease infinite;
+  }
+
+  /* Contenedor principal del formulario */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    margin-top: 140px;
+    
+  }
+
+  /* Caja del formulario con sombra, bordes redondeados y efectos de hover */
+  .login-box {
+    background: white;
+    padding: 40px;
+    width: 400px;
+    border-radius: 15px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .login-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Título del formulario */
+  .login-title {
+    margin-bottom: 20px;
+    font-size: 30px;
+    color: #4a90e2;
+    animation: slideIn 1s ease-in-out;
+  }
+
+  /* Contenedor de los inputs */
+  .login-input-container {
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  /* Icono de los inputs */
+  .login-input-container i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #4a90e2;
+  }
+
+  /* Labels de los inputs */
+  .login-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+  }
+
+  /* Inputs personalizados con animación al recibir foco */
+  .login-input {
+    width: 100%;
+    padding: 10px 40px 10px 40px; /* Espacio para el icono */
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+  }
+
+  .login-input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 8px rgba(74, 144, 226, 0.5);
+    outline: none;
+    background-color: #fff;
+  }
+
+  /* Botón de inicio con colores atractivos y efectos de hover */
+  .login-button {
+    width: 100%;
+    padding: 12px 20px;
+    margin-left: 1px;
+    background-color: #4a90e2;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .login-button:hover {
+    background-color: #357ab8;
+    transform: translateY(-3px);
+  }
+
+  .login-button:active {
+    transform: translateY(1px);
+  }
+
+  /* Enlace para registrarse con efectos */
+  .login-link {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #4a90e2;
+  }
+
+  .login-link a {
+    color: #4a90e2;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .login-link a:hover {
+    color: #357ab8;
+  }
+
+  /* Animaciones de entrada */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Fondo animado */
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+
+  /* Animación de shake (temblor) */
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20%,
+    60% {
+      transform: translateX(-10px);
+    }
+    40%,
+    80% {
+      transform: translateX(10px);
+    }
+  }
+
+  .shake {
+    animation: shake 0.5s;
+  }

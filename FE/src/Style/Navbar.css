@@ -1,0 +1,268 @@
+
+/* Navbar.css */
+
+.mover {
+    background-color: #282c34; /* Fondo oscuro para el navbar */
+    padding: 10px 0;
+  }
+  
+  nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .navbar {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+  }
+  
+  .navbar h3 {
+    margin: 0 20px; /* Espaciado entre los elementos */
+    font-size: 1.2em;
+  }
+  
+  .navbar h3 a {
+    text-decoration: none;
+    color: #007bff; /* Color de texto atractivo */
+    transition: color 0.3s, transform 0.3s;
+  }
+  
+  .navbar h3 a:hover {
+    color: #007bff; /* Color del texto al pasar el ratón */
+    transform: scale(1.1); /* Efecto de aumento al pasar el ratón */
+  }
+  
+  .navbar h3 a:active {
+    color: #007bff; /* Color del texto cuando se hace clic */
+  }
+  
+/* Remove underline from the links */
+.nav-links a {
+  text-decoration: none;
+  color: inherit; /* Keeps the color from the parent element */
+}
+
+.nav-links a:hover {
+  color: #007bff; /* Optionally, you can add a hover effect */
+  text-decoration: none;
+}
+
+.btn_contact {
+  padding: 12px 25px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.4s ease, transform 0.3s ease;
+  margin-left: auto; /* Alinea el botón al final del contenedor */
+}
+
+.btn_contact a {
+  text-decoration: none; /* Eliminar subrayado del enlace en el botón */
+  color: white; /* Color de texto del botón */
+}
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.main-container {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo-img {
+  width: 140px;
+}
+
+/* Navigation */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.nav-links a {
+  font-size: 18px;
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #007bff;
+  transform: translateY(-5px);
+}
+
+/* Button */
+.btn_contact {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.4s ease, transform 0.3s ease;
+}
+
+.btn_contact a {
+  color: white;
+  text-decoration: none;
+}
+
+.btn_contact:hover {
+  background-color: #007bff;
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Media Queries */
+
+/* Estilos para móviles pequeños (320px - 480px) */
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    padding: 10px 20px;
+  }
+
+  .logo-img {
+    width: 120px;
+    margin-bottom: 15px;
+  }
+
+  .nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-links a {
+    font-size: 16px;
+  }
+
+  .btn_contact {
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+}
+
+/* Estilos para tablets (481px - 768px) */
+@media (max-width: 768px) {
+  .header {
+    padding: 10px 25px;
+  }
+
+  .logo-img {
+    width: 130px;
+  }
+
+  .nav {
+    gap: 20px;
+  }
+
+  .nav-links {
+    gap: 20px;
+  }
+
+  .nav-links a {
+    font-size: 16px;
+  }
+
+  .btn_contact {
+    padding: 9px 18px;
+    font-size: 15px;
+  }
+}
+
+/* Estilos para laptops pequeñas (769px - 1024px) */
+@media (max-width: 1024px) {
+  .header {
+    padding: 15px 40px;
+  }
+
+  .logo-img {
+    width: 140px;
+  }
+
+  .nav-links {
+    gap: 25px;
+  }
+
+  .nav-links a {
+    font-size: 17px;
+  }
+
+  .btn_contact {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+}
+
+/* Estilos para dispositivos grandes y desktop (1025px en adelante) */
+@media (min-width: 1025px) {
+  .header {
+    padding: 20px 50px;
+  }
+
+  .logo-img {
+    width: 150px;
+  }
+
+  .nav-links {
+    gap: 30px;
+  }
+
+  .nav-links a {
+    font-size: 18px;
+  }
+
+  .btn_contact {
+    padding: 12px 25px;
+    font-size: 16px;
+  }
+}

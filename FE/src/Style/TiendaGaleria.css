@@ -1,0 +1,68 @@
+/* Contenedor de los materiales */
+.materiales-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Estilo para la lista de materiales */
+  .materiales-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas */
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  
+  /* Tarjeta de material individual */
+  .material-card {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+  }
+  
+  /* Imagen del material */
+  .material-img {
+    border-radius: 10px;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Efecto hover en la tarjeta */
+  .material-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Efecto hover en la imagen */
+  .material-card:hover .material-img {
+    transform: scale(1.05);
+  }
+  
+  /* Título del material */
+  .material-card h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 10px 0;
+    transition: color 0.3s ease;
+  }
+  
+  /* Descripción del material */
+  .material-card p {
+    font-size: 1rem;
+    color: #666;
+    margin: 5px 0;
+  }
+  
+  /* Efecto hover en el título */
+  .material-card:hover h3 {
+    color: #007bff;
+  }
+  

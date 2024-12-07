@@ -1,0 +1,126 @@
+/* Estilo global */
+.body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Contenedor principal */
+  .color {
+    background: linear-gradient(135deg, #e6e9ef, #ffffff);
+    padding: 40px;
+    text-align: center;
+    color: #333;
+    animation: backgroundShift 8s ease-in-out infinite alternate;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Animación de fondo */
+  @keyframes backgroundShift {
+    from {
+      background-position: left;
+    }
+    to {
+      background-position: right;
+    }
+  }
+  
+  /* Logo animado */
+  .move {
+    width: 160px;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  /* Estilos para los contenedores */
+  .service-container {
+    background-color: #ffffff;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 800px;
+    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-in-out forwards;
+  }
+  
+  .service-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Animación para la entrada de los contenedores */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Estilo de los textos en los contenedores */
+  .service-container h2, 
+  .service-container h3, 
+  .service-container h4 {
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .service-container h2 {
+    font-size: 2rem;
+    text-transform: uppercase;
+    color: #007bff; /* Color primario más claro */
+  }
+  
+  .service-container h3, 
+  .service-container h4 {
+    font-size: 1.2rem;
+    color: #555;
+    line-height: 1.8;
+  }
+  
+  /* Efecto de sombra en el texto */
+  h2, h3, h4 {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Ajustes de responsividad */
+  @media (max-width: 768px) {
+    .service-container {
+      width: 90%;
+    }
+    h2 {
+      font-size: 1.8rem;
+    }
+    h3, h4 {
+      font-size: 1.1rem;
+    }
+  }
+
+
+
+  
+  
+  

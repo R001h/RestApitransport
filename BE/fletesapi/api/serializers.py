@@ -1,17 +1,32 @@
-
-from rest_framework import serializers
 from django.contrib.auth.models import User
-from django.contrib.auth.models import Group
-from .models import Service, Order, DriverAssignment, OrderHistory, Complaint, JobAssignment, ServiceFeedback, Vehicle, Task
+from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer
+
+from .models import (
+    Service,
+    Order,
+    DriverAssignment,
+    OrderHistory,
+    Complaint,
+    JobAssignment,
+    ServiceFeedback,
+    Vehicle,
+    Task,
+)
 
 ############################################################################################################    
 
 
 class UserSerializer(serializers.ModelSerializer):
+    role = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = '__all__'
-    
+        fields = ['id', 'username', 'email', 'role']  # Incluye 'role' en los campos
+
+    def get_role(self, obj):
+        # Devuelve el nombre del primer grupo (rol) al que pertenece el usuario
+        return obj.groups.first().name if obj.groups.exists() else None
 
 ############################################################################################################    
 
@@ -74,12 +89,21 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-#####################################################################################
+########################################################################################33
 
+class DriverSerializer(ModelSerializer):
+    class Meta:
+        model = User 
+        fields = '__all__'
+
+#####################################################################################
 class TaskSerializer(serializers.ModelSerializer):
+    assigned_to = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())  # Para enviar/recibir el ID
+    assigned_to_name = serializers.StringRelatedField(source='assigned_to', read_only=True)  # Nombre legible
+
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'status'] 
+        fields = ['id', 'title', 'description', 'status', 'assigned_to', 'assigned_to_name']
 
 
 ###########################################################################################33
@@ -92,6 +116,10 @@ class ServiceSerializer(serializers.ModelSerializer):
         model = Service
         fields = '__all__'
 
+    def validate_image_url(self, value):
+        if value and not value.startswith("http"):
+            raise serializers.ValidationError("La URL de la imagen debe comenzar con 'http'.")
+        return value
 
 ###################################################################################################################
 

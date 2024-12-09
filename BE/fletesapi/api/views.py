@@ -1,11 +1,11 @@
 from rest_framework.views import APIView 
 from rest_framework import generics, status
 from rest_framework.response import Response
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from rest_framework.permissions import AllowAny, IsAuthenticated, BasePermission
 from rest_framework.exceptions import NotFound, PermissionDenied
 from .models import Service, Order,  DriverAssignment, Complaint, JobAssignment, ServiceFeedback, Vehicle, Task
-from .serializers import UserRegisterSerializer, UserSerializer, ServiceSerializer, OrderSerializer, DriverAssignmentSerializer, OrderHistorySerializer, ComplaintSerializer, JobAssignmentSerializer, ServiceFeedbackSerializer, VehicleSerializer, TaskSerializer
+from .serializers import UserRegisterSerializer, UserSerializer, ServiceSerializer, OrderSerializer,DriverSerializer, DriverAssignmentSerializer, OrderHistorySerializer, ComplaintSerializer, JobAssignmentSerializer, ServiceFeedbackSerializer, VehicleSerializer, TaskSerializer
 
 
 
@@ -108,15 +108,39 @@ class EmployeeCreateUserView(generics.CreateAPIView):
         return super().create(request, *args, **kwargs)
 
 
+###########################################################################333
+
+
+class DriverListView(APIView):
+    def get(self, request):
+        try:
+            # Obtener el grupo 'Driver'
+            driver_group = Group.objects.get(name='Driver')
+            
+            # Filtrar usuarios que pertenecen al grupo
+            drivers = User.objects.filter(groups=driver_group)
+            
+            # Serializar los datos necesarios
+            driver_data = [
+                {"id": driver.id, "username": driver.username, "email": driver.email}
+                for driver in drivers
+            ]
+            
+            return Response(driver_data, status=status.HTTP_200_OK)
+        except Group.DoesNotExist:
+            return Response(
+                {"error": "Grupo 'Driver' no encontrado"}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
 ############################################################################
 # Vista para listar las tareas
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
-from .models import Task
-from .serializers import TaskSerializer
 
 class TaskListCreateView(APIView):
     permission_classes = [IsAuthenticated]  # Solo usuarios autenticados
@@ -184,11 +208,13 @@ class TaskDetailUpdateDeleteView(APIView):
 class ServiceListCreateView(generics.ListCreateAPIView):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
+   
   
 
 class ServiceDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
+   
    
 
 ##########################################################################################################################33333

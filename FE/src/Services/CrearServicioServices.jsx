@@ -45,78 +45,83 @@ export const ObtenerServicios = async () => {
   }
 };
 
-
-
-
-
-
 export const CrearServicio = async (nuevoServicio) => {
-
-  console.log(nuevoServicio);
-
   let imagenUrl = '';
 
-  if(nuevoServicio.imagen) {
+  // Subir la imagen a S3 si existe
+  if (nuevoServicio.imagen) {
     try {
       const result = await uploadImageToS3(nuevoServicio.imagen);
       imagenUrl = result.Location; // Obtén la URL de la imagen subida
-      console.log(imagenUrl); 
     } catch (error) {
       console.error('Error al subir la imagen a S3:', error);
       throw new Error('No se pudo subir la imagen a S3');
     }
   }
 
-  const service=   {
-
-    name:nuevoServicio.nombre,
-    description :nuevoServicio.descripcion,
-    image_url:imagenUrl,
-    user:1
-
-  }
-
-  console.log(service);
-  
-
+  // Construir el objeto de servicio
+  const service = {
+    name: nuevoServicio.nombre,
+    description: nuevoServicio.descripcion,
+    image_url: imagenUrl,
+    user: 1  // Asegúrate de pasar el ID correcto del usuario
+  };
 
   try {
     const response = await fetch(API_URL, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(service),
     });
     if (!response.ok) {
-      throw new Error("Error al crear el servicio");
+      throw new Error('Error al crear el servicio');
     }
     return await response.json();
   } catch (error) {
-    console.error("Error al crear el servicio:", error);
+    console.error('Error al crear el servicio:', error);
     throw error;
   }
 };
 
-// Actualizar un servicio existente
 export const ActualizarServicio = async (id, servicio) => {
-  console.log('Datos enviados al backend:', servicio);  // Verifica los datos
+  let imagenUrl = servicio.imagen; // Usar la imagen si está presente, o la que ya estaba
+
+  // Subir la imagen a S3 si se ha actualizado
+  if (servicio.imagen && typeof servicio.imagen !== 'string') {
+    try {
+      const result = await uploadImageToS3(servicio.imagen);
+      imagenUrl = result.Location; // Obtén la URL de la imagen subida
+    } catch (error) {
+      console.error('Error al subir la imagen a S3:', error);
+      throw new Error('No se pudo subir la imagen a S3');
+    }
+  }
+
+  // Construir el objeto de servicio actualizado
+  const updatedService = {
+    name: servicio.nombre,
+    description: servicio.descripcion,
+    image_url: imagenUrl,  // Mantener la imagen actualizada
+    user: 1  // Asegúrate de pasar el ID correcto del usuario
+  };
+
   try {
     const response = await fetch(`${API_URL}${id}/`, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(servicio),
+      body: JSON.stringify(updatedService),
     });
+
     if (!response.ok) {
-      const errorDetails = await response.text(); // Captura el error detallado del backend
-      console.error("Detalles del error:", errorDetails);
-      throw new Error("Error al actualizar el servicio");
+      throw new Error('Error al actualizar el servicio');
     }
     return await response.json();
   } catch (error) {
-    console.error("Error al actualizar el servicio:", error);
+    console.error('Error al actualizar el servicio:', error);
     throw error;
   }
 };

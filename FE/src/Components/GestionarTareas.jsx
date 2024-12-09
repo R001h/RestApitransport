@@ -3,15 +3,21 @@ import '../Style/GestionarTareas.css'; // Estilos del componente
 import { obtenerTareas, crearTarea, editarTarea, eliminarTarea } from '../Services/CreateTasks';
 import iziToast from 'izitoast'; // Alertas estilizadas
 import 'izitoast/dist/css/iziToast.min.css'; // Estilos para iziToast
+import { GetDrivers as obtenerDrivers } from '../Services/DriverService';
 
 function GestionarTareas() {
   const [titulo, setTitulo] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+  const [driverId, setDriverId] = useState(''); // ID del Driver seleccionado
+  const [drivers, setDrivers] = useState([]); // Lista de Drivers
   const [tareas, setTareas] = useState([]);
   const [error, setError] = useState(null);
   const [selectedTareaId, setSelectedTareaId] = useState(null); // Para edición
 
-  // Manejar cambios en el input de título
+  // Manejar cambios en los inputs
   const handleTituloChange = (e) => setTitulo(e.target.value);
+  const handleDescripcionChange = (e) => setDescripcion(e.target.value);
+  const handleDriverChange = (e) => setDriverId(e.target.value);
 
   // Obtener todas las tareas
   const fetchTareas = async () => {
@@ -23,21 +29,46 @@ function GestionarTareas() {
     }
   };
 
+  // Obtener la lista de Drivers
+  const fetchDrivers = async () => {
+    try {
+      const data = await obtenerDrivers();
+      setDrivers(data);
+    } catch (err) {
+      setError('Error al obtener los drivers');
+    }
+  };
+
   // Crear o actualizar una tarea
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (!driverId) {
+        iziToast.error({ title: 'Error', message: 'Debes asignar un Driver' });
+        return;
+      }
+
       if (selectedTareaId) {
-        await editarTarea(selectedTareaId, titulo);
+        await editarTarea(selectedTareaId, {
+          title: titulo,
+          description: descripcion,
+          assigned_to: driverId,
+        });
         iziToast.success({ title: 'Éxito', message: 'Tarea actualizada correctamente' });
         setSelectedTareaId(null);
       } else {
-        await crearTarea(titulo);
+        await crearTarea({
+          title: titulo,
+          description: descripcion,
+          assigned_to: driverId,
+        });
         iziToast.success({ title: 'Éxito', message: 'Tarea creada correctamente' });
       }
 
       fetchTareas(); // Refrescar la lista de tareas
       setTitulo('');
+      setDescripcion('');
+      setDriverId('');
     } catch (err) {
       iziToast.error({ title: 'Error', message: 'Hubo un problema al guardar la tarea' });
     }
@@ -85,10 +116,13 @@ function GestionarTareas() {
   const handleEdit = (tarea) => {
     setSelectedTareaId(tarea.id);
     setTitulo(tarea.title);
+    setDescripcion(tarea.description);
+    setDriverId(tarea.assigned_to || '');
   };
 
   useEffect(() => {
     fetchTareas();
+    fetchDrivers();
   }, []);
 
   return (
@@ -107,6 +141,25 @@ function GestionarTareas() {
             required
           />
         </div>
+        <div>
+          <label>Descripción</label>
+          <textarea
+            value={descripcion}
+            onChange={handleDescripcionChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Asignar Driver</label>
+          <select value={driverId} onChange={handleDriverChange}>
+            <option value="">Seleccionar un Driver</option>
+            {drivers.map((driver) => (
+              <option key={driver.id} value={driver.id}>
+                {driver.name || driver.username || 'Sin Nombre'}
+              </option>
+            ))}
+          </select>
+        </div>
         <button type="submit">
           {selectedTareaId === null ? 'Crear Tarea' : 'Actualizar Tarea'}
         </button>
@@ -123,6 +176,7 @@ function GestionarTareas() {
                 <h4>{tarea.title}</h4>
                 <p><strong>Descripción:</strong> {tarea.description || 'Sin descripción'}</p>
                 <p><strong>Estado:</strong> {tarea.status}</p>
+                <p><strong>Asignado a:</strong> {tarea.assigned_to_name || 'Sin asignar'}</p>
                 <button onClick={() => handleEdit(tarea)}>Editar</button>
                 <button
                   onClick={() => handleDelete(tarea.id)}

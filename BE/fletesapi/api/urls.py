@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import UserRegisterView, UserListCreate, TaskListCreateView, TaskDetailUpdateDeleteView, EmployeeCreateUserView
+from .views import UserRegisterView, UserListCreate, TaskListCreateView, TaskDetailUpdateDeleteView, EmployeeCreateUserView, DriverListView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
@@ -41,5 +41,8 @@ urlpatterns = [
 
     # Task endpoints
     path('tasks/', TaskListCreateView.as_view(), name='task-list-create'),  
-    path('tasks/<int:pk>/', TaskDetailUpdateDeleteView.as_view(), name='task-detail-update-delete'),  
+    path('tasks/<int:pk>/', TaskDetailUpdateDeleteView.as_view(), name='task-detail-update-delete'),
+    
+    path('drivers/', DriverListView.as_view(), name='driver-list'),
+      
 ]

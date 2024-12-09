@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { FaSearch, FaHome, FaChartBar, FaCog, FaSignOutAlt } from 'react-icons/fa';
-import '../Style/Sidebar.css'; 
+import '../Style/Sidebar.css';
 import CrearServicios from './CrearServicios';
-import CrearTarea from './GestionarTareas';
+import GestionarTareas from './GestionarTareas';
 import FormConductor from './FormConductor';
 import FormEmployee from './FormEmployee';
 import FormRegister from './FormRegister';
 import TiendaServicios from './TiendaServicios';
+import AdministracionVehiculos from './AdministracionVehiculos';
 
 const Sidebar = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
@@ -30,9 +31,11 @@ const Sidebar = () => {
             case 'MostrarServicios':
                 return <TiendaServicios />;
             case 'CrearTarea':
-                return <CrearTarea />;
+                return <GestionarTareas />;
             case 'CrearEmpleado':
-                return <FormEmployee/>;
+                return <FormEmployee />;
+            case 'CrearVehiculo':
+                return <AdministracionVehiculos />;
             case 'Conductor':
                 return <FormConductor />;
             case 'Register':
@@ -82,13 +85,6 @@ const Sidebar = () => {
                         Crear Tarea
                     </li>
                     <li
-                        className={`menu-item ${activeItem === 'Servicios' ? 'active' : ''}`}
-                        onClick={() => handleItemClick('Servicios')}
-                    >
-                        <FaCog className="menu-icon" />
-                        Mostrar Tareas
-                    </li>
-                    <li
                         className={`menu-item ${activeItem === 'CrearEmpleado' ? 'active' : ''}`}
                         onClick={() => handleItemClick('CrearEmpleado')}
                     >
@@ -101,6 +97,13 @@ const Sidebar = () => {
                     >
                         <FaSignOutAlt className="menu-icon" />
                         Crear Cliente
+                    </li>
+                    <li
+                        className={`menu-item ${activeItem === 'CrearVehiculo' ? 'active' : ''}`}
+                        onClick={() => handleItemClick('CrearVehiculo')}
+                    >
+                        <FaHome className="menu-icon" />
+                        Crear Vehiculo
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'Login' ? 'active' : ''}`}

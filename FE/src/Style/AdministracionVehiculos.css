@@ -1,0 +1,118 @@
+.vehiculos-admin-container {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+  color: #333;
+}
+
+.vehiculos-form {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.vehiculos-form input {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.vehiculos-form button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.vehiculos-form button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.vehiculos-form button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+.cancel-button {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.vehiculos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.vehiculo-item {
+  background-color: #f0f0f0;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.5s forwards;
+}
+
+.vehiculo-item.nuevo {
+  background-color: #d3d3d3; /* Gris oscuro */
+  animation: highlight 2s forwards;
+}
+
+.vehiculo-item p {
+  margin: 5px 0;
+}
+
+.vehiculo-item button {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.vehiculo-item button:first-of-type {
+  background-color: #ffc107; /* Editar: Amarillo */
+  color: #fff;
+}
+
+.vehiculo-item button:last-of-type {
+  background-color: #dc3545; /* Eliminar: Rojo */
+  color: #fff;
+}
+
+.vehiculo-item button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes highlight {
+  0% {
+    background-color: #d3d3d3;
+  }
+  100% {
+    background-color: #f0f0f0;
+  }
+}

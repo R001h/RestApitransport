@@ -1,56 +1,104 @@
 import React, { useState } from 'react';
+import iziToast from 'izitoast'; // Importamos iziToast para mostrar alertas con estilo.
+import 'izitoast/dist/css/iziToast.min.css'; // Importamos el CSS de iziToast.
 import '../Style/ClientsList.css';
+import RegisterEmployee from '../Services/RegisterEmployee'; // Ajustar ruta si es necesario
 
 const FormEmployee = () => {
-    // Estado para el formulario
     const [newUser, setNewUser] = useState({
-        name: '',
+        username: '',
+        first_name: '',
+        last_name: '',
         email: '',
         password: '',
-        role: ''
+        password_confirm: '',
+        role: '',
     });
 
-    // Maneja el cambio de los campos del formulario
     const handleChange = (e) => {
         const { name, value } = e.target;
         setNewUser((prevData) => ({
             ...prevData,
-            [name]: value
+            [name]: value,
         }));
     };
 
-    // Maneja el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await fetch('/api/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newUser),
+        if (newUser.password !== newUser.password_confirm) {
+            iziToast.error({
+                title: 'Error',
+                message: 'Las contraseñas no coinciden.',
+                position: 'topRight',
             });
-            if (response.ok) {
-                alert('Usuario creado con éxito');
-                setNewUser({ name: '', email: '', password: '', role: '' });
-            } else {
-                alert('Hubo un error al crear el usuario');
-            }
+            return;
+        }
+
+        try {
+            await RegisterEmployee(
+                newUser.username,
+                newUser.first_name,
+                newUser.last_name,
+                newUser.email,
+                newUser.password,
+                newUser.password_confirm,
+                newUser.role,
+            );
+
+            iziToast.success({
+                title: 'Éxito',
+                message: 'Usuario registrado correctamente.',
+                position: 'topRight',
+            });
+
+            setNewUser({
+                username: '',
+                first_name: '',
+                last_name: '',
+                email: '',
+                password: '',
+                password_confirm: '',
+                role: '',
+            });
         } catch (error) {
-            alert('Error al enviar los datos');
+            iziToast.error({
+                title: 'Error',
+                message: 'Hubo un problema al registrar el usuario. Intente nuevamente.',
+                position: 'topRight',
+            });
         }
     };
 
     return (
         <div className="form-container">
-            <h1>Registrar Nuevo Empleado</h1>
+            <h1>Registrar Nuevo Usuario</h1>
             <form className="employee-form" onSubmit={handleSubmit}>
+                <label>
+                    Nombre de Usuario:
+                    <input
+                        type="text"
+                        name="username"
+                        value={newUser.username}
+                        onChange={handleChange}
+                        required
+                    />
+                </label>
                 <label>
                     Nombre:
                     <input
                         type="text"
-                        name="name"
-                        value={newUser.name}
+                        name="first_name"
+                        value={newUser.first_name}
+                        onChange={handleChange}
+                        required
+                    />
+                </label>
+                <label>
+                    Apellido:
+                    <input
+                        type="text"
+                        name="last_name"
+                        value={newUser.last_name}
                         onChange={handleChange}
                         required
                     />
@@ -76,6 +124,16 @@ const FormEmployee = () => {
                     />
                 </label>
                 <label>
+                    Confirmar Contraseña:
+                    <input
+                        type="password"
+                        name="password_confirm"
+                        value={newUser.password_confirm}
+                        onChange={handleChange}
+                        required
+                    />
+                </label>
+                <label>
                     Rol:
                     <select
                         name="role"
@@ -84,18 +142,17 @@ const FormEmployee = () => {
                         required
                     >
                         <option value="">Seleccione un rol</option>
-                        <option value="admin">Administrador</option>
                         <option value="employee">Empleado</option>
-                        <option value="codriver">Ayudante</option>
                         <option value="driver">Conductor</option>
+                        <option value="codriver">Ayudante</option>
                     </select>
                 </label>
-                <button type="submit" className="submit-btn">Registrar Cliente</button>
+                <button type="submit" className="submit-btn">
+                    Registrar Usuario
+                </button>
             </form>
         </div>
     );
 };
 
-
 export default FormEmployee;
-

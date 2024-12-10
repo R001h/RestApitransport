@@ -1,6 +1,7 @@
 from rest_framework.views import APIView 
 from rest_framework import generics, status
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth.models import User, Group
 from rest_framework.permissions import AllowAny, IsAuthenticated, BasePermission
 from rest_framework.exceptions import NotFound, PermissionDenied
@@ -20,6 +21,15 @@ class IsGroupMember(BasePermission):
 class IsAdmin(IsGroupMember):
     group_name = "Admin"
 
+class IsAdminOrOwner(BasePermission):
+    """
+    Permite que los administradores gestionen todos los reclamos
+    y que los clientes gestionen solo los suyos.
+    """
+    def has_object_permission(self, request, view, obj):
+        return request.user.is_staff or obj.client == request.user
+    
+    
 class IsEmployee(IsGroupMember):
     group_name = "Employee"
 
@@ -280,15 +290,39 @@ class OrderHistoryListView(generics.ListAPIView):
 class ComplaintListCreateView(generics.ListCreateAPIView):
     queryset = Complaint.objects.all()
     serializer_class = ComplaintSerializer
-    permission_classes = [AllowAny] 
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['status', 'created_at','tipo']
+
+    def get_queryset(self):
+        # Los administradores ven todos los reclamos, los clientes solo los propios
+        if self.request.user.is_staff:
+            return Complaint.objects.all()
+        return Complaint.objects.filter(client=self.request.user)
 
     def perform_create(self, serializer):
+        # Asegúrate de que el cliente autenticado sea asignado
         serializer.save(client=self.request.user)
-
+     
 class ComplaintDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Complaint.objects.all()
     serializer_class = ComplaintSerializer
-    permission_classes = [AllowAny] 
+    permission_classes = [IsAuthenticated, IsAdmin | IsClient]
+
+    def get_queryset(self):
+        # Los administradores pueden acceder a todos los reclamos
+        if self.request.user.is_staff:
+            return Complaint.objects.all()
+        # Los clientes solo pueden acceder a sus propios reclamos
+        return Complaint.objects.filter(client=self.request.user)
+
+    def perform_update(self, serializer):
+        # Si el usuario es cliente, solo puede actualizar su propio reclamo
+        if self.request.user != serializer.instance.client:
+            raise PermissionDenied("No tienes permiso para actualizar este reclamo.")
+        serializer.save()
+    
+    
 
 
 ##########################################################################################################################33333

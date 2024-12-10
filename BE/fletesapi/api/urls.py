@@ -11,7 +11,10 @@ urlpatterns = [
     # Register endpoints
     path('register/', UserRegisterView.as_view(), name='register'),
     path('employee/create-user/', EmployeeCreateUserView.as_view(), name='employee-create-user'),
-
+    # Driver list 
+    
+    path('drivers/', DriverListView.as_view(), name='driver-list'),
+      
     # Service endpoints
     path('service/', views.ServiceListCreateView.as_view(), name='service-list-create'),
     path('service/<int:pk>/', views.ServiceDetailView.as_view(), name='service-detail'),
@@ -28,9 +31,16 @@ urlpatterns = [
     path('driverassignment/<int:pk>/', views.DriverAssignmentDetailView.as_view(), name='driver-assignment-detail'),
 
     # Rutas para gestionar reclamos de clientes
+    
     path('complaint/', views.ComplaintListCreateView.as_view(), name='complaint-list-create'),
     path('complaint/<int:pk>/', views.ComplaintDetailView.as_view(), name='complaint-detail'),
+    #
+        #/complaint/?status=open
+        #/complaint/?created_at=2024-12-01
 
+    #
+    
+    
     # ServiceFeedback endpoints
     path('feedback/', views.ServiceFeedbackListCreateView.as_view(), name='servicefeedback-list-create'),
     path('feedback/<int:pk>/', views.ServiceFeedbackDetailView.as_view(), name='servicefeedback-detail'),

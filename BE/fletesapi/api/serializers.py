@@ -162,12 +162,27 @@ class OrderHistorySerializer(serializers.ModelSerializer):
 
 ###################################################################################################################
 
-# Serializer para el modelo Complaint
+
 class ComplaintSerializer(serializers.ModelSerializer):
     class Meta:
         model = Complaint
         fields = ['id', 'client', 'order', 'description', 'status', 'created_at', 'resolved_at']
         read_only_fields = ['client', 'created_at', 'resolved_at']
+
+    def update(self, instance, validated_data):
+        # Manejo automático de 'resolved_at'
+        if validated_data.get('status') == 'resolved':
+            validated_data['resolved_at'] = now()
+        elif validated_data.get('status') != instance.status:
+            validated_data['resolved_at'] = None
+        return super().update(instance, validated_data)
+
+    def validate_status(self, value):
+        # Validación simple del campo 'status'
+        allowed_statuses = ['open', 'in-progress', 'resolved']
+        if value not in allowed_statuses:
+            raise serializers.ValidationError(f"Estado inválido. Valores permitidos: {allowed_statuses}")
+        return value
 
 
 

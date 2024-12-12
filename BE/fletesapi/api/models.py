@@ -99,7 +99,6 @@ class Complaint(models.Model):
     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name="complaints")
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="complaints")
     description = models.TextField()
-    tipo = models.CharField(max_length=50, choices=[('daño', 'Daño'), ('retraso', 'Retraso'), ('otro', 'Otro')])
     status = models.CharField(max_length=50, default='open')  # "open", "resolved", "closed"
     created_at = models.DateTimeField(auto_now_add=True)
     resolved_at = models.DateTimeField(blank=True, null=True)

@@ -3,6 +3,7 @@
 // Obtener todos los vehículos
 async function GetVehicles() {
     try {
+        const token = localStorage.getItem('authToken'); 
         const response = await fetch('http://192.168.1.81:8000/vehicle/', {
             method: 'GET',
             headers: {
@@ -26,6 +27,7 @@ async function GetVehicles() {
 // Crear un nuevo vehículo
 async function CreateVehicle(vehicleData) {
     try {
+        const token = localStorage.getItem('authToken'); 
         const response = await fetch('http://192.168.1.81:8000/vehicle/', {
             method: 'POST',
             headers: {

@@ -1,18 +1,17 @@
+// FormRegister.jsx
 import React, { useState } from 'react';
 import '../Style/FormRegister.css';
 import { useNavigate } from 'react-router-dom';
-import RegisterUsers from '../Services/RegisterUsers';
-import iziToast from 'izitoast'; // Importamos iziToast para mostrar alertas con estilo.
-import 'izitoast/dist/css/iziToast.min.css'; // Importamos el CSS de iziToast.
+import RegisterUsers from '../Services/RegisterUsers'; // Asegúrate de que sea la importación correcta
 
 function FormRegister() {
     const [formData, setFormData] = useState({
-        Username: '',
-        FirstName: '',
-        LastName: '',
-        Email: '',
-        Password: '',
-        ConfirmPassword: '',
+        Username: '',        
+        FirstName: '',    
+        LastName: '',        
+        Email: '',                 
+        Password: '',        
+        ConfirmPassword: '', 
     });
 
     const navigate = useNavigate();
@@ -24,39 +23,18 @@ function FormRegister() {
 
     const handleRegister = async () => {
         if (formData.Password !== formData.ConfirmPassword) {
-            iziToast.error({
-                title: 'Error',
-                message: 'Las contraseñas no coinciden. Por favor, verifique.',
-                position: 'topRight',
-            });
+            alert('Las contraseñas no coinciden. Por favor, verifique.');
             return;
         }
 
         try {
             // Llamamos al servicio para crear el usuario
-            await RegisterUsers(
-                formData.Username,
-                formData.FirstName,
-                formData.LastName,
-                formData.Email,
-                formData.Password,
-                formData.ConfirmPassword
-            );
-
-            iziToast.success({
-                title: 'Éxito',
-                message: 'Usuario registrado correctamente.',
-                position: 'topRight',
-            });
-
+            await RegisterUsers(formData.Username, formData.FirstName, formData.LastName, formData.Email, formData.Password,formData.ConfirmPassword);
+            alert('Usuario registrado correctamente');
             navigate('/login'); // Redirige al login después de registrar
         } catch (error) {
             console.error('Error durante el registro:', error);
-            iziToast.error({
-                title: 'Error',
-                message: 'Hubo un problema al registrar el usuario. Intente nuevamente.',
-                position: 'topRight',
-            });
+            alert('Error al registrar usuario. Intente nuevamente.');
         }
     };
 
@@ -113,7 +91,7 @@ function FormRegister() {
                         required
                     />
                 </div>
-
+               
                 <div className="register-input-container">
                     <label className="register-label">Contraseña</label>
                     <input
@@ -138,10 +116,10 @@ function FormRegister() {
                         required
                     />
                 </div>
-                <div></div>
-                <button className="register-button" onClick={handleRegister}>
-                    Registrarse
-                </button>
+                <div>
+                    
+                </div>
+                <button className="register-button" onClick={handleRegister}>Registrarse</button>
             </div>
         </div>
     );

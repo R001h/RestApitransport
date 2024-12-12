@@ -1,14 +1,13 @@
 import React from 'react'
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
-
-import GestionarTareas from '../Components/GestionarTareas';
+import Bannermain from '../Components/BannerMain';
 
 function Principal() {
   return (
     <div>
       <Header />
-      <GestionarTareas />
+      <Bannermain />
       <Footer />
 
     <h1></h1>

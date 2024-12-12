@@ -8,6 +8,9 @@ import FormEmployee from './FormEmployee';
 import FormRegister from './FormRegister';
 import TiendaServicios from './TiendaServicios';
 import AdministracionVehiculos from './AdministracionVehiculos';
+import FormFeedback from './FormFeedback';
+import FormOrderHistory from './FormOrderHistory';
+
 
 const Sidebar = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
@@ -38,6 +41,10 @@ const Sidebar = () => {
                 return <AdministracionVehiculos />;
             case 'Conductor':
                 return <FormConductor />;
+            case 'Feedback':
+                return <FormFeedback />;
+                case 'OrdersHistory':
+                    return <FormOrderHistory />;
             case 'Register':
                 return <FormRegister />;
             default:
@@ -89,28 +96,42 @@ const Sidebar = () => {
                         onClick={() => handleItemClick('CrearEmpleado')}
                     >
                         <FaHome className="menu-icon" />
-                        Crear Empleados
-                    </li>
-                    <li
-                        className={`menu-item ${activeItem === 'Register' ? 'active' : ''}`}
-                        onClick={() => handleItemClick('Register')}
-                    >
-                        <FaSignOutAlt className="menu-icon" />
-                        Crear Cliente
+                        Crear Empleado
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'CrearVehiculo' ? 'active' : ''}`}
                         onClick={() => handleItemClick('CrearVehiculo')}
                     >
                         <FaHome className="menu-icon" />
-                        Crear Vehiculo
+                        Crear Vehículo
                     </li>
                     <li
-                        className={`menu-item ${activeItem === 'Login' ? 'active' : ''}`}
-                        onClick={() => handleItemClick('Login')}
+                        className={`menu-item ${activeItem === 'Conductor' ? 'active' : ''}`}
+                        onClick={() => handleItemClick('Conductor')}
+                    >
+                        <FaHome className="menu-icon" />
+                        Conductor
+                    </li>
+                    <li
+                        className={`menu-item ${activeItem === 'Feedback' ? 'active' : ''}`}
+                        onClick={() => handleItemClick('Feedback')}
+                    >
+                        <FaCog className="menu-icon" />
+                        Feedback
+                    </li>
+                    <li
+                        className={`menu-item ${activeItem === 'Register' ? 'active' : ''}`}
+                        onClick={() => handleItemClick('Register')}
                     >
                         <FaSignOutAlt className="menu-icon" />
-                        Login
+                        Registrar Cliente
+                    </li>
+                    <li
+                        className={`menu-item ${activeItem === 'OrdersHistory' ? 'active' : ''}`}
+                        onClick={() => handleItemClick('OrdersHistory')}
+                    >
+                        <FaSignOutAlt className="menu-icon" />
+                        Historial Registro
                     </li>
                 </ul>
                 <div className="dark-mode-toggle">

@@ -1,0 +1,195 @@
+/* Home.css */
+
+.home-container {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+  }
+  
+  /* Banner */
+  .banner {
+    position: relative;
+    text-align: center;
+    color: white;
+  }
+  
+  .banner-image {
+    width: 100%;
+    height: 50vh;
+    object-fit: cover;
+  }
+  
+  .banner-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .banner-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .banner-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .banner-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Cards Section */
+  .cards-section {
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .card {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    width: calc(33.333% - 2rem);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card h3 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .card p {
+    color: #666;
+  }
+  
+  /* Form Section */
+  .form-section {
+    padding: 2rem;
+    background-color: #f7f7f7;
+  }
+  
+  .quotation-form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .quotation-form label {
+    font-weight: bold;
+  }
+  
+  .quotation-form input,
+  .quotation-form textarea,
+  .quotation-form select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .quotation-form button {
+    padding: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .quotation-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Provinces Section */
+  .provinces-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .province-card {
+    width: calc(33.333% - 2rem);
+    text-align: center;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .province-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .province-card p {
+    margin: 0.5rem;
+    font-weight: bold;
+  }
+  
+  /* Reviews Section */
+  .reviews-section {
+    padding: 2rem;
+    background-color: #f7f7f7;
+  }
+  
+  .reviews-carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+  }
+  
+  .review {
+    min-width: 300px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .review h4 {
+    margin-top: 1rem;
+    color: #007bff;
+  }
+  
+  /* Call to Action */
+  .cta-section {
+    padding: 2rem;
+    text-align: center;
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .cta-button {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    color: #007bff;
+    background: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .cta-button:hover {
+    background-color: #0056b3;
+    color: white;
+  }
+  

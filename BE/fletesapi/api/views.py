@@ -151,23 +151,32 @@ class DriverListView(APIView):
 
 ############################################################################
 # Vista para listar las tareas
-
 class TaskListCreateView(APIView):
-    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados
+    permission_classes = [AllowAny]  # Cambiar según sea necesario
 
     def get(self, request):
-        # Filtrar tareas asignadas al usuario autenticado
-        tasks = Task.objects.filter(assigned_to=request.user)
+        # Filtrar tareas, aquí puedes ajustar según el rol o lógica específica
+        tasks = Task.objects.all()  # O filtrar si es necesario
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        # Crear una nueva tarea asociada al usuario autenticado
+        # Crear una nueva tarea usando los datos enviados
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(assigned_to=request.user)  # Asignar automáticamente
+            assigned_user = serializer.validated_data.get('assigned_to')  # Extraer el usuario asignado
+
+            # Verifica que el usuario existe y tiene permisos, si es necesario
+            if not User.objects.filter(id=assigned_user.id).exists():
+                return Response(
+                    {"error": "El usuario asignado no existe."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            serializer.save()  # Guarda la tarea con el usuario asignado
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class TaskDetailUpdateDeleteView(APIView):
     permission_classes = [AllowAny]

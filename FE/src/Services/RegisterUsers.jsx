@@ -18,6 +18,7 @@ async function RegisterUsers(username, firstName, lastName, email, password,pass
     
 
     try {
+        const token = localStorage.getItem('authToken'); 
         const response = await fetch('http://127.0.0.1:8000/register/', {
             method: 'POST',
             headers: {

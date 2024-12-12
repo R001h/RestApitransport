@@ -28,15 +28,18 @@ export const crearTarea = async (titulo) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`, // Agrega el token en el encabezado
       },
-      body: JSON.stringify({ title: titulo }),
+      body: JSON.stringify(titulo),
     });
 
     if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error del servidor:', errorData);
       throw new Error('Error al crear la tarea');
     }
 
     return await response.json();
   } catch (err) {
+    console.error('Error al crear la tarea:', err.message);
     throw new Error(err.message);
   }
 };

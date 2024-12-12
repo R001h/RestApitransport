@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../Style/FormAdmin.css';
 
-function FormConductor() {
+function FormAsignarFletes() {
   return (
     <div>
 
@@ -94,4 +94,4 @@ function AsignarTarea() {
   );
 }
 
-export default FormConductor;
+export default FormAsignarFletes;

@@ -28,7 +28,9 @@ export const uploadImageToS3 = async (file) => {
 
 // Obtener todos los servicios
 export const ObtenerServicios = async () => {
+
   try {
+    const token = localStorage.getItem('authToken'); 
     const response = await fetch(API_URL);
     if (!response.ok) {
       throw new Error("Error al obtener los servicios");
@@ -51,6 +53,7 @@ export const CrearServicio = async (nuevoServicio) => {
   // Subir la imagen a S3 si existe
   if (nuevoServicio.imagen) {
     try {
+      const token = localStorage.getItem('authToken'); 
       const result = await uploadImageToS3(nuevoServicio.imagen);
       imagenUrl = result.Location; // Obtén la URL de la imagen subida
     } catch (error) {

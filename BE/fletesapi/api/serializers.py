@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
@@ -26,7 +26,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_role(self, obj):
         # Devuelve el nombre del primer grupo (rol) al que pertenece el usuario
-        return obj.groups.first().name if obj.groups.exists() else None
+         if obj.groups.exists():
+            group = obj.groups.first()
+            return group.name if group.name else None
+        
 
 ############################################################################################################    
 
@@ -34,7 +37,8 @@ class UserSerializer(serializers.ModelSerializer):
 class UserRegisterSerializer(serializers.ModelSerializer):
     # Añadimos un campo para confirmar la contraseña
     password_confirm = serializers.CharField(write_only=True)
-    role = serializers.CharField(write_only=True, required=False) 
+    role = serializers.CharField(write_only=True, required=False, default='client')  # Rol predeterminado
+
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password', 'password_confirm', 'role']
@@ -51,12 +55,18 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("La contraseña debe tener al menos 6 caracteres.")
         return value
 
+    def validate_role(self, value):
+        # Validar que el rol sea uno permitido
+        allowed_roles = Group.objects.values_list('name', flat=True)  # Lista de roles permitidos
+        if value not in allowed_roles:
+            raise serializers.ValidationError(f"El rol '{value}' no está permitido.")
+        return value
 
     def create(self, validated_data):
         validated_data.pop('password_confirm')  # No se almacena en la base de datos
-        role = validated_data.pop('role', None)  # Extrae el rol, si existe
+        role = validated_data.pop('role', None)  # Rol predeterminado
 
-        # Crear el usuario como superusuario
+        # Crear el usuario
         user = User(
             username=validated_data['username'],
             first_name=validated_data['first_name'],
@@ -65,18 +75,16 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data['password'])  # Encriptar contraseña
         user.save()
-        
-        # Asignar al grupo "admin"
-        if role:
-            try:
-                group = Group.objects.get(name=role)
-                user.groups.add(group)
-            except Group.DoesNotExist:
-                raise serializers.ValidationError(f"El grupo '{role}' no existe.")
 
+        # Asignar el grupo basado en el rol
+        try:
+            group = Group.objects.get(name=role)
+            user.groups.add(group)  # Añadir el grupo al usuario
+        except Group.DoesNotExist:
+            raise serializers.ValidationError(f"El grupo '{role}' no existe. Verifica los roles en el sistema.")
 
         return user
-    
+
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
         instance.first_name = validated_data.get('first_name', instance.first_name)
@@ -89,6 +97,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
 ########################################################################################33
 
 class DriverSerializer(ModelSerializer):
@@ -98,12 +107,18 @@ class DriverSerializer(ModelSerializer):
 
 #####################################################################################
 class TaskSerializer(serializers.ModelSerializer):
-    assigned_to = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())  # Para enviar/recibir el ID
-    assigned_to_name = serializers.StringRelatedField(source='assigned_to', read_only=True)  # Nombre legible
+    assigned_to = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())  # Acepta ID del usuario
+    assigned_to_name = serializers.CharField(source='assigned_to.username', read_only=True)  # Nombre del usuario
 
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'status', 'assigned_to', 'assigned_to_name']
+        fields = ['id', 'title', 'description', 'assigned_to', 'assigned_to_name', 'status']
+
+    def create(self, validated_data):
+        # Crear y devolver la tarea
+        return Task.objects.create(**validated_data)
+
+        
 
 
 ###########################################################################################33

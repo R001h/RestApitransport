@@ -337,18 +337,30 @@ class ComplaintDetailView(generics.RetrieveUpdateDestroyAPIView):
 ##########################################################################################################################33333
     
 # Vista para gestionar la asignación de trabajos a empleados o coordinadores
+
 class JobAssignmentListCreateView(generics.ListCreateAPIView):
+    
     queryset = JobAssignment.objects.all()
     serializer_class = JobAssignmentSerializer
-    permission_classes = [AllowAny] 
+    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados
+
+    def perform_create(self, serializer):
+        if not self.request.user.groups.filter(name__in=["Employee", "Admin"]).exists():
+            raise PermissionDenied("No tienes permiso para asignar tareas.")
+        serializer.save()
 
 
 class JobAssignmentDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = JobAssignment.objects.all()
     serializer_class = JobAssignmentSerializer
-    permission_classes = [AllowAny] 
+    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados
 
-
+    def perform_update(self, serializer):
+        if not self.request.user.groups.filter(name="Employee").exists():
+            raise PermissionDenied("Solo los empleados pueden actualizar el estado de una tarea.")
+        serializer.save()
+        
+        
 ##########################################################################################################################33333
     
 # Vista para gestionar los comentarios de los clientes sobre los servicios prestados

@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import UserRegisterView, UserListCreate, TaskListCreateView, TaskDetailUpdateDeleteView, EmployeeCreateUserView, DriverListView
+from .views import UserRegisterView, UserListCreate, TaskListCreateView, TaskDetailUpdateDeleteView, EmployeeCreateUserView, JobAssignmentListCreateView, DriverListView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
@@ -38,8 +38,9 @@ urlpatterns = [
         #/complaint/?status=open
         #/complaint/?created_at=2024-12-01
 
-    #
-    
+    # asignacion de brete 
+    path('assignments/', JobAssignmentListCreateView.as_view(), name='job-assignment-list-create'),
+    path('assignments/<int:pk>/', JobAssignmentDetailView.as_view(), name='job-assignment-detail'),
     
     # ServiceFeedback endpoints
     path('feedback/', views.ServiceFeedbackListCreateView.as_view(), name='servicefeedback-list-create'),

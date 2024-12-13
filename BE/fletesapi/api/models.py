@@ -113,7 +113,7 @@ class Complaint(models.Model):
 ############################################################################################################    
 
 
-# Modelo para asignación de trabajos a empleados o coordinadores
+# Modelo para asignación de trabajos a empleados o 
 
 class JobAssignment(models.Model):
     STATUS_CHOICES = [
@@ -124,11 +124,11 @@ class JobAssignment(models.Model):
 
     employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name="job_assignments")
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="job_assignments")
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='pending')
     assigned_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self):
-        return f"Job assigned to {self.employee.username} for Order {self.order.id} - Status: {self.get_status_display()}"
+        return f"Assignment for {self.employee.username} on Order {self.order.id} - Status: {self.status}"
 
    
 ############################################################################################################    

@@ -206,11 +206,51 @@ class ComplaintSerializer(serializers.ModelSerializer):
 
 # Serializer para el modelo JobAssignment
 class JobAssignmentSerializer(serializers.ModelSerializer):
+    employee = serializers.SerializerMethodField()  # Para incluir detalles del empleado
+    order = serializers.SerializerMethodField()     # Para incluir detalles de la orden
+
+    def validate_status(self, value):
+        valid_statuses = ['pending', 'in_progress', 'completed']
+        if value not in valid_statuses:
+            raise serializers.ValidationError(f"Estado '{value}' no válido.")
+        return value
+    
     class Meta:
         model = JobAssignment
-        fields = ['id', 'employee', 'order', 'assigned_at']
+        fields = ['id', 'employee', 'order', 'assigned_at', 'status']
         read_only_fields = ['assigned_at']
 
+    def get_employee(self, obj):
+        """Devuelve detalles del empleado asignado."""
+        return {
+            "id": obj.employee.id,
+            "username": obj.employee.username,
+            "first_name": obj.employee.first_name,
+            "last_name": obj.employee.last_name,
+            "email": obj.employee.email,
+            "role": obj.employee.groups.first().name if obj.employee.groups.exists() else None
+        }
+
+    def get_order(self, obj):
+        """Devuelve detalles de la orden asignada."""
+        return {
+            "id": obj.order.id,
+            "status": obj.order.status,
+            "service": obj.order.service.name,
+            "client": {
+                "id": obj.order.client.id,
+                "username": obj.order.client.username,
+                "email": obj.order.client.email
+            },
+            "created_at": obj.order.created_at
+        }
+
+    def validate_status(self, value):
+        """Validar que el estado sea uno permitido."""
+        valid_statuses = ['pending', 'in_progress', 'completed']
+        if value not in valid_statuses:
+            raise serializers.ValidationError(f"Estado '{value}' no válido.")
+        return value
 
 
 ############################################################################################################    

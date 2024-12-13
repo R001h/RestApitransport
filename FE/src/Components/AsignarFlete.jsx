@@ -5,7 +5,7 @@ import iziToast from 'izitoast'; // Alertas estilizadas
 import 'izitoast/dist/css/iziToast.min.css'; // Estilos para iziToast
 import { GetDrivers as obtenerDrivers } from '../Services/DriverService';
 
-function GestionarTareas() {
+function AsignarFlete() {
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [driverId, setDriverId] = useState(''); // ID del Driver seleccionado
@@ -132,7 +132,7 @@ function GestionarTareas() {
 
   return (
     <div className="main-container">
-      <h2>Gestión de Tareas</h2>
+      <h2>Asignar Flete</h2>
       {error && <p className="error">{error}</p>}
 
       {/* Formulario para crear o editar tareas */}
@@ -198,4 +198,4 @@ function GestionarTareas() {
   );
 }
 
-export default GestionarTareas;
+export default AsignarFlete;

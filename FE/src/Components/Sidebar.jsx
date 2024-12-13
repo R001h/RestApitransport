@@ -10,6 +10,7 @@ import TiendaServicios from './TiendaServicios';
 import AdministracionVehiculos from './AdministracionVehiculos';
 import FormFeedback from './FormFeedback';
 import FormOrderHistory from './FormOrderHistory';
+import AsignarFlete from './AsignarFlete';
 
 
 const Sidebar = () => {
@@ -35,6 +36,8 @@ const Sidebar = () => {
                 return <TiendaServicios />;
             case 'CrearTarea':
                 return <GestionarTareas />;
+            case 'AsignarFlete':
+                return <AsignarFlete />;
             case 'CrearEmpleado':
                 return <FormEmployee />;
             case 'CrearVehiculo':
@@ -43,10 +46,12 @@ const Sidebar = () => {
                 return <FormConductor />;
             case 'Feedback':
                 return <FormFeedback />;
-                case 'OrdersHistory':
+            case 'OrdersHistory':
                     return <FormOrderHistory />;
             case 'Register':
                 return <FormRegister />;
+            case 'Register':
+                    return <FormRegister />;
             default:
                 return <h1>Welcome</h1>;
         }
@@ -90,6 +95,13 @@ const Sidebar = () => {
                     >
                         <FaChartBar className="menu-icon" />
                         Crear Tarea
+                    </li>
+                    <li
+                        className={`menu-item ${activeItem === 'AsignarFlete' ? 'active' : ''}`}
+                        onClick={() => handleItemClick('AsignarFlete')}
+                    >
+                        <FaChartBar className="menu-icon" />
+                        Asignar Flete
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'CrearEmpleado' ? 'active' : ''}`}

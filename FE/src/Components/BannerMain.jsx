@@ -57,10 +57,6 @@ const Bannermain = () => {
   </div>
 </section>
 
-
-  
-      
-
 <section className="info-section">
   <div className="info-banner">
     <h2>Por qué elegirnos</h2>

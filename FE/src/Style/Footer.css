@@ -1,98 +1,103 @@
-/* Footer Styles */
+/* Estilos generales del footer */
 .footer {
-    background-color: #f0f0f0; /* Fondo claro */
-    padding: 40px 0;
-    color: #333;
-  }
-  
+  background-color: #f8f8f8; /* Fondo claro */
+  color: #333; /* Texto oscuro */
+  padding: 20px 40px;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between; /* Distribuir columnas horizontalmente */
+  align-items: flex-start; /* Alinear contenido en la parte superior */
+  gap: 20px;
+  flex-wrap: wrap; /* Responsivo: columnas se apilan en pantallas pequeñas */
+}
+
+/* Columna 1: Logo */
+.footer-logo-container {
+  flex: 1; /* Toma espacio disponible de forma proporcional */
+  min-width: 150px;
+  text-align: center; /* Centrar contenido en la columna */
+}
+
+.footer-logo {
+  max-width: 150px; /* Tamaño máximo del logo */
+  height: auto;
+}
+
+/* Columna 2: Contacto */
+.footer-contact {
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer-contact h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #007bff; /* Color principal (azul) */
+}
+
+.contact-info div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.contact-info div box-icon {
+  margin-right: 10px;
+  font-size: 20px;
+  color: #555;
+}
+
+.contact-info span {
+  font-size: 16px;
+  color: #333;
+}
+
+/* Columna 3: Redes sociales */
+.footer-social {
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer-social h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #007bff; /* Azul principal */
+}
+
+.social-icons a {
+  margin-right: 10px;
+  font-size: 24px;
+  color: #555;
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #007bff; /* Cambia a azul principal al pasar el cursor */
+}
+
+/* Derechos reservados */
+.footer-bottom {
+  text-align: center;
+  margin-top: 20px;
+  border-top: 1px solid #ccc; /* Línea separadora */
+  padding-top: 10px;
+  font-size: 14px;
+  color: #777;
+}
+
+/* Estilos responsivos para pantallas pequeñas */
+@media (max-width: 768px) {
   .footer-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
+    flex-direction: column; /* Apilar columnas verticalmente */
+    text-align: center; /* Centrar todo el contenido */
   }
-  
-  .footer-logo {
-    max-width: 100px;
+
+  .footer-logo-container,
+  .footer-contact,
+  .footer-social {
     margin-bottom: 20px;
   }
-  
-  .contact-info {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .contact-info div {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-  }
-  
-  .contact-info box-icon {
-    margin-right: 10px;
-    font-size: 20px;
-    color: #007bff;
-  }
-  
-  
- 
-  
-  .footer-social .social-icons {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .footer-social box-icon {
-    font-size: 28px;
-    color: #555;
-    transition: transform 0.3s ease, color 0.3s ease;
-  }
-  
-  .footer-social box-icon:hover {
-    transform: scale(1.2);
-    color: #007bff;
-  }
-  
-  .footer-newsletter form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .footer-newsletter input {
-    margin-bottom: 10px;
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .footer-newsletter button {
-    padding: 10px;
-    background-color: #ff69b4;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .footer-newsletter button:hover {
-    background-color: #ff4596;
-  }
-  
-  .footer-bottom {
-    text-align: center;
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #e0e0e0;
-  }
-  
-  .footer-bottom p {
-    margin: 0;
-    font-size: 14px;
-    color: #555;
-  }
-  
+}

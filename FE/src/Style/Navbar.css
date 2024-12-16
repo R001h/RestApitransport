@@ -14,7 +14,7 @@ nav {
 }
 
 .navbar h3 {
-  margin: 0 20px; /* Espaciado entre los elementos */
+  margin: 0 10px; /* Espaciado entre los elementos */
   font-size: 1.2em;
 }
 
@@ -42,6 +42,7 @@ nav {
 
 .main-container {
   width: 100%;
+  
   overflow-x: hidden;
 }
 
@@ -60,8 +61,8 @@ nav {
 
 /* Logo */
 .logo-img {
-  width: 120px; /* Reduce the size of the logo */
-  max-width: 100%; /* Ensure it doesn't overflow */
+  width: 100px; /* Reduce the size of the logo */
+  max-width: 80%; /* Ensure it doesn't overflow */
   padding-right: 30px;
 }
 
@@ -160,7 +161,7 @@ nav {
 }
 
 .logo-img {
-  width: 130px;
+  width: 100px;
 }
 
 .nav {

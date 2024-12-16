@@ -1,53 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import '../Style/GestionarTareas.css'; // Estilos del componente
-import { obtenerTareas, crearTarea, editarTarea, eliminarTarea } from '../Services/CreateTasks';
-import iziToast from 'izitoast'; // Alertas estilizadas
-import 'izitoast/dist/css/iziToast.min.css'; // Estilos para iziToast
-import { GetDrivers as obtenerDrivers } from '../Services/DriverService';
+import React, { useState, useEffect } from 'react'; // Importa React y hooks para manejar estado y efectos
+import '../Style/GestionarTareas.css'; // Importa los estilos para el componente
+import { obtenerTareas, crearTarea, editarTarea, eliminarTarea } from '../Services/CreateTasks'; // Importa las funciones de la API
+import iziToast from 'izitoast'; // Importa iziToast para alertas estilizadas
+import 'izitoast/dist/css/iziToast.min.css'; // Estilos de iziToast
+import { GetDrivers as obtenerDrivers } from '../Services/DriverService'; // Importa funcion para obtener lista de drivers
 
 function GestionarTareas() {
-  const [titulo, setTitulo] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [driverId, setDriverId] = useState(''); // ID del Driver seleccionado
-  const [drivers, setDrivers] = useState([]); // Lista de Drivers
-  const [tareas, setTareas] = useState([]);
-  const [error, setError] = useState(null);
-  const [selectedTareaId, setSelectedTareaId] = useState(null); // Para edición
+  // Estados para manejar diferentes aspectos del componente
+  const [titulo, setTitulo] = useState(''); // Estado para el titulo de la tarea
+  const [descripcion, setDescripcion] = useState(''); // Estado para la descripcion de la tarea
+  const [driverId, setDriverId] = useState(''); // Estado para el ID del driver seleccionado
+  const [drivers, setDrivers] = useState([]); // Lista de drivers disponibles
+  const [tareas, setTareas] = useState([]); // Lista de tareas
+  const [error, setError] = useState(null); // Manejo de errores
+  const [selectedTareaId, setSelectedTareaId] = useState(null); // ID de la tarea seleccionada para edicion
 
-  // Manejar cambios en los inputs
+  // Maneja el cambio de texto en el input del titulo
   const handleTituloChange = (e) => setTitulo(e.target.value);
+
+  // Maneja el cambio de texto en el input de descripcion
   const handleDescripcionChange = (e) => setDescripcion(e.target.value);
+
+  // Maneja el cambio de seleccion en el dropdown de drivers
   const handleDriverChange = (e) => setDriverId(e.target.value);
 
-  // Obtener todas las tareas
+  // Funcion para obtener todas las tareas de la API
   const fetchTareas = async () => {
     try {
-      const data = await obtenerTareas();
-      setTareas(data); // Guardar las tareas en el estado
+      const data = await obtenerTareas(); // Llama a la API
+      setTareas(data); // Guarda las tareas en el estado
     } catch (err) {
-      setError('Error al obtener las tareas');
+      setError('Error al obtener las tareas'); // Maneja errores
     }
   };
 
-  // Obtener la lista de Drivers
+  // Funcion para obtener la lista de drivers
   const fetchDrivers = async () => {
     try {
-      const data = await obtenerDrivers();
-      setDrivers(data);
+      const data = await obtenerDrivers(); // Llama a la API
+      setDrivers(data); // Guarda los drivers en el estado
     } catch (err) {
-      setError('Error al obtener los drivers');
+      setError('Error al obtener los drivers'); // Maneja errores
     }
   };
 
-  // Crear o actualizar una tarea
+  // Maneja el envio del formulario para crear o actualizar una tarea
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Valida que un driver haya sido seleccionado
       if (!driverId) {
         iziToast.error({ title: 'Error', message: 'Debes asignar un Driver' });
         return;
       }
 
+      // Si hay una tarea seleccionada, actualiza la tarea
       if (selectedTareaId) {
         await editarTarea(selectedTareaId, {
           title: titulo,
@@ -55,31 +62,30 @@ function GestionarTareas() {
           assigned_to: driverId,
           status: "Pending"
         });
-        iziToast.success({ title: 'Éxito', message: 'Tarea actualizada correctamente' });
-        setSelectedTareaId(null);
+        iziToast.success({ title: 'Exito', message: 'Tarea actualizada correctamente' });
+        setSelectedTareaId(null); // Reinicia el estado de seleccion
       } else {
-
-        
+        // Crea una nueva tarea
         await crearTarea({
           title: titulo,
           description: descripcion,
           assigned_to: driverId,
           assigned_to_name: driverId,
-          status:"Pending"
+          status: "Pending"
         });
-        iziToast.success({ title: 'Éxito', message: 'Tarea creada correctamente' });
+        iziToast.success({ title: 'Exito', message: 'Tarea creada correctamente' });
       }
 
-      fetchTareas(); // Refrescar la lista de tareas
-      setTitulo('');
-      setDescripcion('');
-      setDriverId('');
+      fetchTareas(); // Actualiza la lista de tareas
+      setTitulo(''); // Reinicia el titulo
+      setDescripcion(''); // Reinicia la descripcion
+      setDriverId(''); // Reinicia el driver
     } catch (err) {
       iziToast.error({ title: 'Error', message: 'Hubo un problema al guardar la tarea' });
     }
   };
 
-  // Eliminar una tarea
+  // Maneja la eliminacion de una tarea
   const handleDelete = async (id) => {
     iziToast.question({
       timeout: 20000,
@@ -88,21 +94,20 @@ function GestionarTareas() {
       displayMode: 'once',
       id: 'question',
       zindex: 999,
-      title: '¿Estás seguro?',
+      title: '¿Estas seguro?',
       message: '¿Quieres eliminar esta tarea?',
       position: 'center',
       buttons: [
         [
-          '<button><b>Sí</b></button>',
+          '<button><b>Si</b></button>',
           async function (instance, toast) {
             try {
-              await eliminarTarea(id);
+              await eliminarTarea(id); // Llama a la API para eliminar la tarea
               iziToast.success({ title: 'Eliminado', message: 'La tarea ha sido eliminada' });
-              fetchTareas();
+              fetchTareas(); // Refresca la lista de tareas
             } catch (err) {
               iziToast.error({ title: 'Error', message: 'Hubo un problema al eliminar la tarea' });
             }
-
             instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
           },
           true,
@@ -117,14 +122,15 @@ function GestionarTareas() {
     });
   };
 
-  // Editar una tarea
+  // Maneja la edicion de una tarea
   const handleEdit = (tarea) => {
-    setSelectedTareaId(tarea.id);
-    setTitulo(tarea.title);
-    setDescripcion(tarea.description);
-    setDriverId(tarea.assigned_to || '');
+    setSelectedTareaId(tarea.id); // Guarda la ID de la tarea seleccionada
+    setTitulo(tarea.title); // Carga el titulo de la tarea
+    setDescripcion(tarea.description); // Carga la descripcion de la tarea
+    setDriverId(tarea.assigned_to || ''); // Carga el ID del driver asignado
   };
 
+  // Efectos para cargar las tareas y drivers al montar el componente
   useEffect(() => {
     fetchTareas();
     fetchDrivers();
@@ -132,13 +138,13 @@ function GestionarTareas() {
 
   return (
     <div className="main-container">
-      <h2>Gestión de Tareas</h2>
+      <h2>Gestion de Tareas</h2>
       {error && <p className="error">{error}</p>}
 
       {/* Formulario para crear o editar tareas */}
       <form onSubmit={handleSubmit} className="form-container">
         <div>
-          <label>Título de la Tarea</label>
+          <label>Titulo de la Tarea</label>
           <input
             type="text"
             value={titulo}
@@ -147,7 +153,7 @@ function GestionarTareas() {
           />
         </div>
         <div>
-          <label>Descripción</label>
+          <label>Descripcion</label>
           <textarea
             value={descripcion}
             onChange={handleDescripcionChange}
@@ -179,7 +185,7 @@ function GestionarTareas() {
             {tareas.map((tarea) => (
               <div key={tarea.id} className="tarea-card">
                 <h4>{tarea.title}</h4>
-                <p><strong>Descripción:</strong> {tarea.description || 'Sin descripción'}</p>
+                <p><strong>Descripcion:</strong> {tarea.description || 'Sin descripcion'}</p>
                 <p><strong>Estado:</strong> {tarea.status}</p>
                 <p><strong>Asignado a:</strong> {tarea.assigned_to_name || 'Sin asignar'}</p>
                 <button onClick={() => handleEdit(tarea)}>Editar</button>

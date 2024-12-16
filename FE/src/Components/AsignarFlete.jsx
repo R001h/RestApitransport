@@ -1,128 +1,126 @@
-import React, { useEffect, useState } from 'react';
-import { GetDrivers } from '../Services/DriverService';
+import React, { useState, useEffect } from 'react';
+import { GetDrivers } from '../Services/DriverService'; // Servicio para obtener los conductores.
+import OrderService from '../Services/OrderService'; // Servicio para obtener las ordenes.
+import AssignmentService from '../Services/AssignmentService'; // Servicio para asignar conductores a ordenes.
+import '../Style/AsignarFlete.css';  // Importamos los estilos CSS para el Sidebar
 
-function OrderAssignmentComponent() {
-    const [drivers, setDrivers] = useState([]);
-    const [orders, setOrders] = useState([]);
-    const [selectedDriver, setSelectedDriver] = useState('');
-    const [selectedOrder, setSelectedOrder] = useState('');
-    const [error, setError] = useState(null);
-    const [successMessage, setSuccessMessage] = useState(null);
+const OrderAssignmentComponent = () => {
+    const [drivers, setDrivers] = useState([]); // Lista de conductores.
+    const [orders, setOrders] = useState([]); // Lista de ordenes.
+    const [selectedDriver, setSelectedDriver] = useState(''); // Conductor seleccionado.
+    const [selectedOrder, setSelectedOrder] = useState(''); // Orden seleccionada.
+    const [error, setError] = useState(''); // Estado para manejar mensajes de error.
+    const [success, setSuccess] = useState(''); // Estado para manejar mensajes de exito.
+    const [isLoading, setIsLoading] = useState(false); // Estado para manejar el estado de carga.
 
     useEffect(() => {
-        const fetchDriversAndOrders = async () => {
+        const fetchInitialData = async () => {
             try {
-                const driverData = await GetDrivers();
-                setDrivers(driverData);
-
-                const ordersResponse = await fetch(`http://127.0.0.1:8000/order/`);
-                if (!ordersResponse.ok) {
-                    throw new Error('Error fetching orders');
-                }
-
-                const orderData = await ordersResponse.json();
-                setOrders(orderData);
-            } catch (err) {
-                setError('Error al obtener los drivers y órdenes');
+                const driversData = await GetDrivers();
+                console.log('Datos de conductores:', driversData);
+                setDrivers(driversData);
+                const ordersData = await OrderService.getOrders();
+                setOrders(ordersData);
+            } catch (error) {
+                setError('Error al cargar conductores u ordenes.');
             }
         };
 
-        fetchDriversAndOrders();
+        fetchInitialData();
     }, []);
 
-    const handleDriverChange = (e) => {
-        setSelectedDriver(e.target.value);
-    };
-
-    const handleOrderChange = (e) => {
-        setSelectedOrder(e.target.value);
-    };
-
     const handleAssignDriver = async () => {
-        setError(null); // Resetea el error al iniciar la asignación
-        setSuccessMessage(null); // Resetea el mensaje de éxito
+        setError('');
+        setSuccess('');
+        setIsLoading(true);
+
+        if (!selectedDriver || !selectedOrder) {
+            setError('Debe seleccionar un conductor y una orden.');
+            setIsLoading(false);
+            return;
+        }
 
         try {
-            const token = localStorage.getItem('authToken');
-            if (!token) {
-                throw new Error('No se encontró el token de autenticación.');
-            }
+            const response = await AssignmentService.createAssignment(selectedOrder, selectedDriver);
+            setSuccess('Conductor asignado correctamente.');
 
-            const response = await fetch(`http://127.0.0.1:8000/driverassignment/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({ driver: selectedDriver, order: selectedOrder }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al asignar driver a la orden');
-            }
-
-            const result = await response.json();
-            setSuccessMessage('Driver asignado con éxito.');
-            console.log('Driver asignado:', result);
-
-            // Actualiza las órdenes después de la asignación
-            const updatedOrdersResponse = await fetch(`http://127.0.0.1:8000/order/`);
-            if (updatedOrdersResponse.ok) {
-                const updatedOrders = await updatedOrdersResponse.json();
-                setOrders(updatedOrders);
-            }
+            const updatedOrders = await OrderService.getOrders();
+            setOrders(updatedOrders);
         } catch (error) {
-            console.error('Error al asignar driver:', error);
-            setError(error.message || 'Error al asignar el conductor');
+            setError(error.message || 'Error al asignar el conductor.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
+    const renderError = () => {
+        if (error) {
+            return <div style={{ color: 'red' }}>{error}</div>;
+        }
+        return null;
+    };
+
+    const renderSuccess = () => {
+        if (success) {
+            return <div style={{ color: 'green' }}>{success}</div>;
+        }
+        return null;
+    };
+    const renderDriverOptions = () => {
+        return drivers.map((driver) => {
+            if (driver.first_name && driver.last_name) {
+                return (
+                    <option key={driver.id} value={driver.id}>
+                        {driver.first_name} {driver.last_name}
+                    </option>
+                );
+            }
+            return null; // No renderizar si los datos están incompletos
+        });
+    };
+    
+    const renderOrderOptions = () => {
+        return orders.map((order) => {
+            if (order.client_details && order.status) {
+                return (
+                    <option key={order.id} value={order.id}>
+                        {order.client_details} - {order.status}
+                    </option>
+                );
+            }
+            return null; // No renderizar si los datos están incompletos
+        });
+    };
+    
+
     return (
         <div>
-            <h3>Asignar Driver a Orden</h3>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+            <h2>Asignacion de Fletes</h2>
+
+            {renderError()}
+            {renderSuccess()}
 
             <div>
-                <label>Selecciona un Driver</label>
-                <select value={selectedDriver} onChange={handleDriverChange}>
-                    <option value="">Selecciona un Driver</option>
-                    {drivers.map((driver) => (
-                        <option key={driver.id} value={driver.id}>
-                            {driver.username}
-                        </option>
-                    ))}
+                <label>Seleccione un Conductor:</label>
+                <select value={selectedDriver} onChange={(e) => setSelectedDriver(e.target.value)}>
+                    <option value="">--Seleccione--</option>
+                    {renderDriverOptions()}
                 </select>
             </div>
 
             <div>
-                <label>Selecciona una Orden</label>
-                <select value={selectedOrder} onChange={handleOrderChange}>
-                    <option value="">Selecciona una Orden</option>
-                    {orders.map((order) => {
-                        const clientDetails = order.client_details || {};
-                        const firstName = clientDetails.first_name || "Nombre no disponible";
-                        const lastName = clientDetails.last_name || "Apellido no disponible";
-                        const contactNumber = order.contact_number || "Sin contacto";
-
-                        return (
-                            <option key={order.id} value={order.id}>
-                                Orden ID: {order.id} | Estado: {order.status} | 
-                                Cliente: {firstName} {lastName} | Contacto: {contactNumber}
-                            </option>
-                        );
-                    })}
+                <label>Seleccione una Orden:</label>
+                <select value={selectedOrder} onChange={(e) => setSelectedOrder(e.target.value)}>
+                    <option value="">--Seleccione--</option>
+                    {renderOrderOptions()}
                 </select>
             </div>
 
-            <button
-                onClick={handleAssignDriver}
-                disabled={!selectedDriver || !selectedOrder}
-            >
-                Asignar
+            <button onClick={handleAssignDriver} disabled={isLoading || !selectedDriver || !selectedOrder}>
+                {isLoading ? 'Asignando...' : 'Asignar'}
             </button>
         </div>
     );
-}
+};
 
 export default OrderAssignmentComponent;

@@ -94,30 +94,25 @@ class Complaint(models.Model):
 
     def __str__(self):
         return f"Complaint {self.id} - Order {self.order.id}"
-    
-
-
-
    
 ############################################################################################################    
 
 
 # Modelo para asignación de trabajos a empleados o 
-
 class JobAssignment(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
         ('in_progress', 'In Progress'),
         ('completed', 'Completed'),
     ]
-
-    employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name="job_assignments")
+    
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="job_assignments")
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='pending')
     assigned_at = models.DateTimeField(auto_now_add=True)
+    assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='job_assignments')
 
     def __str__(self):
-        return f"Assignment for {self.employee.username} on Order {self.order.id} - Status: {self.status}"
+        return f"Assignment for {self.assigned_to.username} on Order {self.order.id} - Status: {self.status}"
 
    
 ############################################################################################################    
@@ -125,8 +120,6 @@ class JobAssignment(models.Model):
 
 
 # Modelo para los comentarios de los clientes sobre los servicios prestados
-
-
 
 class ServiceFeedback(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="feedbacks")

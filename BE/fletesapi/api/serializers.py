@@ -139,8 +139,6 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 # Serializador para el pedido
-
-# Serializador para el pedido
 class OrderSerializer(serializers.ModelSerializer):
     client_details = serializers.SerializerMethodField()
     driver = serializers.StringRelatedField(read_only=True)
@@ -198,33 +196,24 @@ class ComplaintSerializer(serializers.ModelSerializer):
 
 
 ############################################################################################################    
-
-
-# Serializer para el modelo JobAssignment
 class JobAssignmentSerializer(serializers.ModelSerializer):
-    employee = serializers.SerializerMethodField()  # Para incluir detalles del empleado
-    order = serializers.SerializerMethodField()     # Para incluir detalles de la orden
+    assigned_to = serializers.SerializerMethodField()  # Para incluir detalles del usuario asignado
+    order = serializers.SerializerMethodField()        # Para incluir detalles de la orden
 
-    def validate_status(self, value):
-        valid_statuses = ['pending', 'in_progress', 'completed']
-        if value not in valid_statuses:
-            raise serializers.ValidationError(f"Estado '{value}' no válido.")
-        return value
-    
     class Meta:
         model = JobAssignment
-        fields = ['id', 'employee', 'order', 'assigned_at', 'status']
+        fields = ['id', 'assigned_to', 'order', 'assigned_at', 'status']
         read_only_fields = ['assigned_at']
 
-    def get_employee(self, obj):
-        """Devuelve detalles del empleado asignado."""
+    def get_assigned_to(self, obj):
+        """Devuelve detalles del usuario asignado."""
         return {
-            "id": obj.employee.id,
-            "username": obj.employee.username,
-            "first_name": obj.employee.first_name,
-            "last_name": obj.employee.last_name,
-            "email": obj.employee.email,
-            "role": obj.employee.groups.first().name if obj.employee.groups.exists() else None
+            "id": obj.assigned_to.id,
+            "username": obj.assigned_to.username,
+            "first_name": obj.assigned_to.first_name,
+            "last_name": obj.assigned_to.last_name,
+            "email": obj.assigned_to.email,
+            "role": obj.assigned_to.groups.first().name if obj.assigned_to.groups.exists() else None
         }
 
     def get_order(self, obj):
@@ -245,7 +234,7 @@ class JobAssignmentSerializer(serializers.ModelSerializer):
         """Validar que el estado sea uno permitido."""
         valid_statuses = ['pending', 'in_progress', 'completed']
         if value not in valid_statuses:
-            raise serializers.ValidationError(f"Estado '{value}' no válido.")
+            raise serializers.ValidationError(f"Estado '{value}' no valido.")
         return value
 
 

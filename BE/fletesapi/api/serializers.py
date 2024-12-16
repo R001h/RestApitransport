@@ -5,7 +5,6 @@ from rest_framework.serializers import ModelSerializer
 from .models import (
     Service,
     Order,
-    DriverAssignment,
     OrderHistory,
     Complaint,
     JobAssignment,
@@ -140,27 +139,24 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 # Serializador para el pedido
+
+# Serializador para el pedido
 class OrderSerializer(serializers.ModelSerializer):
-    client = serializers.StringRelatedField(read_only=True)
+    client_details = serializers.SerializerMethodField()
     driver = serializers.StringRelatedField(read_only=True)
     service = ServiceSerializer(read_only=True)
 
     class Meta:
         model = Order
-        fields = '__all__'
-        
+        fields = ['id', 'status', 'created_at', 'updated_at', 'client_details', 'driver', 'service', 'contact_number']
 
-###################################################################################################################
-
-# Serializador para la asignación de conductores
-class DriverAssignmentSerializer(serializers.ModelSerializer):
-    driver = serializers.StringRelatedField(read_only=True)
-    order = OrderSerializer(read_only=True)
-
-    class Meta:
-        model = DriverAssignment
-        fields = '__all__'
-
+    def get_client_details(self, obj):
+        """Devuelve los detalles del cliente como un diccionario."""
+        client = obj.client
+        return {
+            "id": client.id,
+            "first_name": client.first_name,
+            "last_name": client.last_name, }
 
 ###################################################################################################################
 

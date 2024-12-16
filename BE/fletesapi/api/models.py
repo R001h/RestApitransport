@@ -31,6 +31,8 @@ class Order(models.Model):
 
     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name="orders")
+    contact_number = models.CharField(max_length=15, blank=True, null=True)  # Número de contacto del cliente
+    details = models.TextField(blank=True, null=True)  # Detalles adicionales
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -65,19 +67,6 @@ class Task(models.Model):
    
 ############################################################################################################        
 
-    
-# Modelo para asignar conductores y vehículos a pedidos
-class DriverAssignment(models.Model):
-    driver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="assignments")
-    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name="driver_assignment")
-    vehicle = models.CharField(max_length=255, blank=True, null=True)
-    assigned_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Driver {self.driver.username} assigned to Order {self.order.id}"
-
-   
-############################################################################################################    
 
 
 # Modelo para registrar el historial de estados de los pedidos

@@ -1,201 +1,128 @@
-import React, { useState, useEffect } from 'react';
-import '../Style/GestionarTareas.css'; // Estilos del componente
-import { obtenerTareas, crearTarea, editarTarea, eliminarTarea } from '../Services/CreateTasks';
-import iziToast from 'izitoast'; // Alertas estilizadas
-import 'izitoast/dist/css/iziToast.min.css'; // Estilos para iziToast
-import { GetDrivers as obtenerDrivers } from '../Services/DriverService';
+import React, { useEffect, useState } from 'react';
+import { GetDrivers } from '../Services/DriverService';
 
-function AsignarFlete() {
-  const [titulo, setTitulo] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [driverId, setDriverId] = useState(''); // ID del Driver seleccionado
-  const [drivers, setDrivers] = useState([]); // Lista de Drivers
-  const [tareas, setTareas] = useState([]);
-  const [error, setError] = useState(null);
-  const [selectedTareaId, setSelectedTareaId] = useState(null); // Para edición
+function OrderAssignmentComponent() {
+    const [drivers, setDrivers] = useState([]);
+    const [orders, setOrders] = useState([]);
+    const [selectedDriver, setSelectedDriver] = useState('');
+    const [selectedOrder, setSelectedOrder] = useState('');
+    const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
 
-  // Manejar cambios en los inputs
-  const handleTituloChange = (e) => setTitulo(e.target.value);
-  const handleDescripcionChange = (e) => setDescripcion(e.target.value);
-  const handleDriverChange = (e) => setDriverId(e.target.value);
-
-  // Obtener todas las tareas
-  const fetchTareas = async () => {
-    try {
-      const data = await obtenerTareas();
-      setTareas(data); // Guardar las tareas en el estado
-    } catch (err) {
-      setError('Error al obtener las tareas');
-    }
-  };
-
-  // Obtener la lista de Drivers
-  const fetchDrivers = async () => {
-    try {
-      const data = await obtenerDrivers();
-      setDrivers(data);
-    } catch (err) {
-      setError('Error al obtener los drivers');
-    }
-  };
-
-  // Crear o actualizar una tarea
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (!driverId) {
-        iziToast.error({ title: 'Error', message: 'Debes asignar un Driver' });
-        return;
-      }
-
-      if (selectedTareaId) {
-        await editarTarea(selectedTareaId, {
-          title: titulo,
-          description: descripcion,
-          assigned_to: driverId,
-          status: "Pending"
-        });
-        iziToast.success({ title: 'Éxito', message: 'Tarea actualizada correctamente' });
-        setSelectedTareaId(null);
-      } else {
-
-        
-        await crearTarea({
-          title: titulo,
-          description: descripcion,
-          assigned_to: driverId,
-          assigned_to_name: driverId,
-          status:"Pending"
-        });
-        iziToast.success({ title: 'Éxito', message: 'Tarea creada correctamente' });
-      }
-
-      fetchTareas(); // Refrescar la lista de tareas
-      setTitulo('');
-      setDescripcion('');
-      setDriverId('');
-    } catch (err) {
-      iziToast.error({ title: 'Error', message: 'Hubo un problema al guardar la tarea' });
-    }
-  };
-
-  // Eliminar una tarea
-  const handleDelete = async (id) => {
-    iziToast.question({
-      timeout: 20000,
-      close: false,
-      overlay: true,
-      displayMode: 'once',
-      id: 'question',
-      zindex: 999,
-      title: '¿Estás seguro?',
-      message: '¿Quieres eliminar esta tarea?',
-      position: 'center',
-      buttons: [
-        [
-          '<button><b>Sí</b></button>',
-          async function (instance, toast) {
+    useEffect(() => {
+        const fetchDriversAndOrders = async () => {
             try {
-              await eliminarTarea(id);
-              iziToast.success({ title: 'Eliminado', message: 'La tarea ha sido eliminada' });
-              fetchTareas();
+                const driverData = await GetDrivers();
+                setDrivers(driverData);
+
+                const ordersResponse = await fetch(`http://127.0.0.1:8000/order/`);
+                if (!ordersResponse.ok) {
+                    throw new Error('Error fetching orders');
+                }
+
+                const orderData = await ordersResponse.json();
+                setOrders(orderData);
             } catch (err) {
-              iziToast.error({ title: 'Error', message: 'Hubo un problema al eliminar la tarea' });
+                setError('Error al obtener los drivers y órdenes');
+            }
+        };
+
+        fetchDriversAndOrders();
+    }, []);
+
+    const handleDriverChange = (e) => {
+        setSelectedDriver(e.target.value);
+    };
+
+    const handleOrderChange = (e) => {
+        setSelectedOrder(e.target.value);
+    };
+
+    const handleAssignDriver = async () => {
+        setError(null); // Resetea el error al iniciar la asignación
+        setSuccessMessage(null); // Resetea el mensaje de éxito
+
+        try {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                throw new Error('No se encontró el token de autenticación.');
             }
 
-            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-          },
-          true,
-        ],
-        [
-          '<button>Cancelar</button>',
-          function (instance, toast) {
-            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
-          },
-        ],
-      ],
-    });
-  };
+            const response = await fetch(`http://127.0.0.1:8000/driverassignment/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({ driver: selectedDriver, order: selectedOrder }),
+            });
 
-  // Editar una tarea
-  const handleEdit = (tarea) => {
-    setSelectedTareaId(tarea.id);
-    setTitulo(tarea.title);
-    setDescripcion(tarea.description);
-    setDriverId(tarea.assigned_to || '');
-  };
+            if (!response.ok) {
+                throw new Error('Error al asignar driver a la orden');
+            }
 
-  useEffect(() => {
-    fetchTareas();
-    fetchDrivers();
-  }, []);
+            const result = await response.json();
+            setSuccessMessage('Driver asignado con éxito.');
+            console.log('Driver asignado:', result);
 
-  return (
-    <div className="main-container">
-      <h2>Asignar Flete</h2>
-      {error && <p className="error">{error}</p>}
+            // Actualiza las órdenes después de la asignación
+            const updatedOrdersResponse = await fetch(`http://127.0.0.1:8000/order/`);
+            if (updatedOrdersResponse.ok) {
+                const updatedOrders = await updatedOrdersResponse.json();
+                setOrders(updatedOrders);
+            }
+        } catch (error) {
+            console.error('Error al asignar driver:', error);
+            setError(error.message || 'Error al asignar el conductor');
+        }
+    };
 
-      {/* Formulario para crear o editar tareas */}
-      <form onSubmit={handleSubmit} className="form-container">
+    return (
         <div>
-          <label>Título de la Tarea</label>
-          <input
-            type="text"
-            value={titulo}
-            onChange={handleTituloChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Descripción</label>
-          <textarea
-            value={descripcion}
-            onChange={handleDescripcionChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Asignar Driver</label>
-          <select value={driverId} onChange={handleDriverChange}>
-            <option value="">Seleccionar un Driver</option>
-            {drivers.map((driver) => (
-              <option key={driver.id} value={driver.id}>
-                {driver.name || driver.username || 'Sin Nombre'}
-              </option>
-            ))}
-          </select>
-        </div>
-        <button type="submit">
-          {selectedTareaId === null ? 'Crear Tarea' : 'Actualizar Tarea'}
-        </button>
-      </form>
+            <h3>Asignar Driver a Orden</h3>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
 
-      {/* Lista de tareas */}
-      <div className="tareas-container">
-        <h3>Lista de Tareas</h3>
-        {tareas.length === 0 && <p>No hay tareas disponibles</p>}
-        {tareas.length > 0 && (
-          <div className="tareas-list">
-            {tareas.map((tarea) => (
-              <div key={tarea.id} className="tarea-card">
-                <h4>{tarea.title}</h4>
-                <p><strong>Descripción:</strong> {tarea.description || 'Sin descripción'}</p>
-                <p><strong>Estado:</strong> {tarea.status}</p>
-                <p><strong>Asignado a:</strong> {tarea.assigned_to_name || 'Sin asignar'}</p>
-                <button onClick={() => handleEdit(tarea)}>Editar</button>
-                <button
-                  onClick={() => handleDelete(tarea.id)}
-                  style={{ backgroundColor: 'red', color: 'white' }}
-                >
-                  Eliminar
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+            <div>
+                <label>Selecciona un Driver</label>
+                <select value={selectedDriver} onChange={handleDriverChange}>
+                    <option value="">Selecciona un Driver</option>
+                    {drivers.map((driver) => (
+                        <option key={driver.id} value={driver.id}>
+                            {driver.username}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
+            <div>
+                <label>Selecciona una Orden</label>
+                <select value={selectedOrder} onChange={handleOrderChange}>
+                    <option value="">Selecciona una Orden</option>
+                    {orders.map((order) => {
+                        const clientDetails = order.client_details || {};
+                        const firstName = clientDetails.first_name || "Nombre no disponible";
+                        const lastName = clientDetails.last_name || "Apellido no disponible";
+                        const contactNumber = order.contact_number || "Sin contacto";
+
+                        return (
+                            <option key={order.id} value={order.id}>
+                                Orden ID: {order.id} | Estado: {order.status} | 
+                                Cliente: {firstName} {lastName} | Contacto: {contactNumber}
+                            </option>
+                        );
+                    })}
+                </select>
+            </div>
+
+            <button
+                onClick={handleAssignDriver}
+                disabled={!selectedDriver || !selectedOrder}
+            >
+                Asignar
+            </button>
+        </div>
+    );
 }
 
-export default AsignarFlete;
+export default OrderAssignmentComponent;

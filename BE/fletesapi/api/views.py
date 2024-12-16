@@ -5,8 +5,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth.models import User, Group
 from rest_framework.permissions import AllowAny, IsAuthenticated, BasePermission
 from rest_framework.exceptions import NotFound, PermissionDenied
-from .models import Service, Order,  DriverAssignment, Complaint, JobAssignment, ServiceFeedback, Vehicle, Task
-from .serializers import UserRegisterSerializer, UserSerializer, ServiceSerializer, OrderSerializer,DriverSerializer, DriverAssignmentSerializer, OrderHistorySerializer, ComplaintSerializer, JobAssignmentSerializer, ServiceFeedbackSerializer, VehicleSerializer, TaskSerializer
+from .models import Service, Order, Complaint, JobAssignment, ServiceFeedback, Vehicle, Task
+from .serializers import UserRegisterSerializer, UserSerializer, ServiceSerializer, OrderSerializer, DriverSerializer, OrderHistorySerializer, ComplaintSerializer, JobAssignmentSerializer, ServiceFeedbackSerializer, VehicleSerializer, TaskSerializer
 
 
 
@@ -259,23 +259,6 @@ class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
             serializer.save(status="en proceso")
         else:
             serializer.save()
-
-
-##########################################################################################################################33333
-    
-
-
-# Vista para gestionar asignación de conductores
-class DriverAssignmentListCreateView(generics.ListCreateAPIView):
-    queryset = DriverAssignment.objects.all()
-    serializer_class = DriverAssignmentSerializer
-    permission_classes = [AllowAny] 
-
-
-class DriverAssignmentDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = DriverAssignment.objects.all()
-    serializer_class = DriverAssignmentSerializer
-    permission_classes = [AllowAny] 
 
 
 ##########################################################################################################################33333

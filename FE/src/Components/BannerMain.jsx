@@ -7,7 +7,7 @@ const Bannermain = () => {
       {/* Banner */}
       <section className="banner">
         <img 
-          src="/path-to-banner-image.jpg" 
+          src="https://rgbucketfwd.s3.us-east-2.amazonaws.com/camiongmc.png" 
           alt="Mudanzas en Costa Rica" 
           className="banner-image"
         />

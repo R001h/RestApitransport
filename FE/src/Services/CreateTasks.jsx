@@ -44,12 +44,20 @@ export const crearTarea = async (titulo) => {
   }
 };
 export const editarTarea = async (taskId, titulo, assigned_to) => {
+
+
+  console.log(taskId, titulo, assigned_to);
+
+  const token =localStorage.getItem('authToken')
+  console.log(token);
+  
+  
   try {
     const response = await fetch(`http://127.0.0.1:8000/tasks/${taskId}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`, // Si usas JWT
+        Authorization: `Bearer ${token}`, // Si usas JWT
       },
       body: JSON.stringify({
         title: titulo,

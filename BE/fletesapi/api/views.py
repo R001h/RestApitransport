@@ -118,8 +118,7 @@ class EmployeeCreateUserView(generics.CreateAPIView):
         return super().create(request, *args, **kwargs)
 
 
-###########################################################################333
-
+###########################################################################
 
 class DriverListView(APIView):
     def get(self, request):
@@ -140,6 +139,35 @@ class DriverListView(APIView):
         except Group.DoesNotExist:
             return Response(
                 {"error": "Grupo 'Driver' no encontrado"}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+###########################################################################
+
+class ClientListView(APIView):
+    def get(self, request):
+        try:
+            # Obtener el grupo 'Client'
+            client_group = Group.objects.get(name='Client')
+            
+            # Filtrar usuarios que pertenecen al grupo
+            clients = User.objects.filter(groups=client_group)
+            
+            # Serializar los datos necesarios
+            client_data = [
+                {"id": client.id, "username": client.username, "email": client.email}
+                for client in clients
+            ]
+            
+            return Response(client_data, status=status.HTTP_200_OK)
+        except Group.DoesNotExist:
+            return Response(
+                {"error": "Grupo 'Client' no encontrado"}, 
                 status=status.HTTP_404_NOT_FOUND
             )
         except Exception as e:

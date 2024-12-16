@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import FeedbackService from '../Services/FeedbackService';
 import StarRatings from 'react-star-ratings';
-
+import GetOrders  from '../Services/OrderService' 
 const Feedback = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const [orders, setOrders] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState('');
   // Cargar las reseñas al cargar el componente
   useEffect(() => {
     const fetchFeedbacks = async () => {
@@ -25,6 +26,24 @@ const Feedback = () => {
     };
     fetchFeedbacks();
   }, []);
+
+
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+        try {
+        
+          const ordersData = await GetOrders();
+      
+          
+        setOrders(ordersData);
+        } catch (error) {
+            setError('Error al cargar  ordenes.');
+        }
+    };
+
+    fetchOrders();
+}, []);
 
   const handleRatingChange = (newRating) => {
     setRating(newRating);
@@ -66,6 +85,22 @@ const Feedback = () => {
     }
   };
 
+
+
+  const renderOrderOptions = () => {
+    return orders.map((order) => {
+        
+            return (
+                <option key={order.id} value={order.id}>
+                    {order.client_details.first_name}{order.contact_number}
+                    
+                </option>
+            );
+        
+        return null; // No renderizar si los datos están incompletos
+    });
+};
+
   return (
     <div>
       <h2>Reseñas de Feedback</h2>
@@ -84,6 +119,13 @@ const Feedback = () => {
             starDimension="30px"
             starSpacing="5px"
           />
+        </div>
+        <div>
+        <label>Seleccione una Orden:</label>
+                <select value={selectedOrder} onChange={(e) => setSelectedOrder(e.target.value)}>
+                    <option value="">--Seleccione--</option>
+                    {renderOrderOptions()}
+                </select>
         </div>
         <div>
           <label>Comentario:</label>

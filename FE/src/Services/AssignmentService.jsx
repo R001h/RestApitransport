@@ -18,13 +18,24 @@ const AssignmentService = {
 
     async createAssignment(orderId, driverId) {
         const token = localStorage.getItem('authToken');
+
+
+        console.log(orderId, driverId);
+
+        const data={
+                assigned_to:driverId,
+                order:orderId 
+            }
+    
+        
+        
         const response = await fetch('http://127.0.0.1:8000/assignments/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`
             },
-            body: JSON.stringify({ orderId, driverId })
+            body: JSON.stringify(data)
         });
 
         if (!response.ok) {

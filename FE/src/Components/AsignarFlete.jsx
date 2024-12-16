@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GetDrivers } from '../Services/DriverService'; // Servicio para obtener los conductores.
-import OrderService from '../Services/OrderService'; // Servicio para obtener las ordenes.
+import GetOrders  from '../Services/OrderService'        ; // Servicio para obtener las ordenes.
 import AssignmentService from '../Services/AssignmentService'; // Servicio para asignar conductores a ordenes.
 import '../Style/AsignarFlete.css';  // Importamos los estilos CSS para el Sidebar
 
@@ -19,8 +19,10 @@ const OrderAssignmentComponent = () => {
                 const driversData = await GetDrivers();
                 console.log('Datos de conductores:', driversData);
                 setDrivers(driversData);
-                const ordersData = await OrderService.getOrders();
-                setOrders(ordersData);
+              const ordersData = await GetOrders();
+              console.log(ordersData[1].contact_number);
+              
+            setOrders(ordersData);
             } catch (error) {
                 setError('Error al cargar conductores u ordenes.');
             }
@@ -28,6 +30,8 @@ const OrderAssignmentComponent = () => {
 
         fetchInitialData();
     }, []);
+
+
 
     const handleAssignDriver = async () => {
         setError('');
@@ -41,6 +45,9 @@ const OrderAssignmentComponent = () => {
         }
 
         try {
+
+        
+            
             const response = await AssignmentService.createAssignment(selectedOrder, selectedDriver);
             setSuccess('Conductor asignado correctamente.');
 
@@ -68,36 +75,37 @@ const OrderAssignmentComponent = () => {
     };
     const renderDriverOptions = () => {
         return drivers.map((driver) => {
-            if (driver.first_name && driver.last_name) {
+           
                 return (
                     <option key={driver.id} value={driver.id}>
-                        {driver.first_name} {driver.last_name}
+                        {driver.email} {driver.username}
                     </option>
                 );
-            }
+            
             return null; // No renderizar si los datos están incompletos
         });
     };
     
     const renderOrderOptions = () => {
         return orders.map((order) => {
-            if (order.client_details && order.status) {
+            
                 return (
                     <option key={order.id} value={order.id}>
-                        {order.client_details} - {order.status}
+                        {order.client_details.first_name}{order.contact_number}
+                        
                     </option>
                 );
-            }
+            
             return null; // No renderizar si los datos están incompletos
         });
     };
-    
+
 
     return (
         <div>
             <h2>Asignacion de Fletes</h2>
 
-            {renderError()}
+       
             {renderSuccess()}
 
             <div>

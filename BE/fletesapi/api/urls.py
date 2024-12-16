@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 from .views import (
     UserRegisterView, UserListCreate, TaskListCreateView, TaskDetailUpdateDeleteView,
-    EmployeeCreateUserView, JobAssignmentListCreateView, DriverListView
+    EmployeeCreateUserView, JobAssignmentListCreateView, DriverListView, ClientListView
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -15,6 +15,8 @@ urlpatterns = [
 
     # --- Driver Management ---
     path('drivers/', DriverListView.as_view(), name='driver-list'),
+    # --- Client Management ---
+    path('clients/', ClientListView.as_view(), name='client-list'),
 
     # --- Service Management ---
     path('service/', views.ServiceListCreateView.as_view(), name='service-list-create'),

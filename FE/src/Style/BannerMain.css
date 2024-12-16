@@ -1,195 +1,382 @@
-/* Home.css */
-
 .home-container {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    color: #333;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Banner */
+.banner {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.banner-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.banner-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.banner-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.banner-button {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.banner-button:hover {
+  background-color: #0056b3;
+}
+
+/* Cards Section */
+.cards-section {
+  padding: 2rem;
+  text-align: center;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.card {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 1rem;
+  width: calc(33.333% - 2rem);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  margin-bottom: 0.5rem;
+  color: #000; /* Título en negro */
+}
+
+.card p {
+  color: #666;
+}
+
+/* Form Section */
+.form-section {
+  padding: 2rem;
+  background-color: #f7f7f7;
+}
+
+.quotation-form {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.quotation-form label {
+  font-weight: bold;
+}
+
+.quotation-form input,
+.quotation-form textarea,
+.quotation-form select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.quotation-form button {
+  padding: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.quotation-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Provinces Section */
+.provinces-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.province-card {
+  width: calc(25% - 2rem);
+  text-align: center;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease-in-out; /* Animación de entrada */
+}
+
+.province-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid #ddd;
+  transition: transform 0.3s ease, filter 0.3s ease; /* Transiciones suaves */
+}
+
+.province-card img:hover {
+  transform: scale(1.1); /* Efecto de zoom */
+  filter: brightness(1.2); /* Aumenta el brillo */
+}
+
+/* Estilos para el banner */
+.info-banner {
+  background-color: #f5f5f5; /* Fondo claro para destacar */
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1000px; /* Ancho máximo */
+  text-align: center;
+}
+
+.info-card {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: linear-gradient(to right, #e0f7fa, #e0f2f1);
+  border-radius: 10px;
+}
+
+.info-paragraph {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #444;
+}
+
+.experience-paragraph {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 15px 0;
+  color: #222;
+}
+
+h3 {
+  font-size: 1.2rem;
+  color: #000; /* Título en negro */
+  margin-top: 15px;
+}
+
+/* Estilo de las provincias */
+.provinces-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.province-card {
+  width: calc(33.333% - 2rem);
+  text-align: center;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.Guanacaste-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.province-name {
+  font-weight: bold;
+  padding: 10px;
+  font-size: 1rem;
+  color: #000; /* Nombre de la provincia en negro */
+}
+
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  /* Banner */
-  .banner {
-    position: relative;
-    text-align: center;
-    color: white;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .banner-image {
-    width: 100%;
-    height: 50vh;
-    object-fit: cover;
+}
+
+/* Reviews Section */
+.reviews-section {
+  padding: 2rem;
+  background-color: #f7f7f7;
+}
+
+.reviews-carousel {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+}
+
+.review {
+  min-width: 300px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.review img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Call to Action */
+.cta-section {
+  padding: 2rem;
+  text-align: center;
+  background-color: #007bff;
+  color: white;
+}
+
+.cta-button {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  color: #007bff;
+  background: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cta-button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+/* Ajustes generales para todas las imágenes */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Sección de Cards */
+.cards-section {
+  padding: 2rem;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.cards-section h2 {
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  color: #333;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Animación de aparición */
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  width: calc(33.333% - 2rem);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: scale(0.9);
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Asignar retrasos a las tarjetas */
+.card:nth-child(1) {
+  animation-delay: 0.2s;
+}
+.card:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.card:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.card:nth-child(4) {
+  animation-delay: 0.8s;
+}
+.card:nth-child(5) {
+  animation-delay: 1s;
+}
+.card:nth-child(6) {
+  animation-delay: 1.2s;
+}
+
+/* Efecto hover */
+.card:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  border-color: #007bff;
+}
+
+/* Animación de aparición (fade-in con escala) */
+@keyframes fadeIn {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
   }
-  
-  .banner-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
-  
-  .banner-content h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .banner-button {
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-    color: white;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .banner-button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Cards Section */
-  .cards-section {
-    padding: 2rem;
-    text-align: center;
-  }
-  
-  .cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-  }
-  
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .card {
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 1rem;
-    width: calc(33.333% - 2rem);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: calc(50% - 1rem);
   }
-  
-  .card h3 {
-    margin-bottom: 0.5rem;
-  }
-  
-  .card p {
-    color: #666;
-  }
-  
-  /* Form Section */
-  .form-section {
-    padding: 2rem;
-    background-color: #f7f7f7;
-  }
-  
-  .quotation-form {
-    max-width: 600px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .quotation-form label {
-    font-weight: bold;
-  }
-  
-  .quotation-form input,
-  .quotation-form textarea,
-  .quotation-form select {
+}
+
+@media (max-width: 480px) {
+  .card {
     width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
   }
-  
-  .quotation-form button {
-    padding: 1rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .banner-image {
+    height: 150px;
   }
-  
-  .quotation-form button:hover {
-    background-color: #0056b3;
+
+  .province-card img {
+    height: 120px;
   }
-  
-  /* Provinces Section */
-  .provinces-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-  }
-  
-  .province-card {
-    width: calc(33.333% - 2rem);
-    text-align: center;
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .province-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-  
-  .province-card p {
-    margin: 0.5rem;
-    font-weight: bold;
-  }
-  
-  /* Reviews Section */
-  .reviews-section {
-    padding: 2rem;
-    background-color: #f7f7f7;
-  }
-  
-  .reviews-carousel {
-    display: flex;
-    overflow-x: auto;
-    gap: 1rem;
-  }
-  
-  .review {
-    min-width: 300px;
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .review h4 {
-    margin-top: 1rem;
-    color: #007bff;
-  }
-  
-  /* Call to Action */
-  .cta-section {
-    padding: 2rem;
-    text-align: center;
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .cta-button {
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    color: #007bff;
-    background: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .cta-button:hover {
-    background-color: #0056b3;
-    color: white;
-  }
-  
+}

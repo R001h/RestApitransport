@@ -105,6 +105,13 @@ class DriverSerializer(ModelSerializer):
         fields = '__all__'
 
 #####################################################################################
+
+class ClientSerializer(ModelSerializer):
+    class Meta:
+        model = User 
+        fields = '__all__'
+
+#####################################################################################
 class TaskSerializer(serializers.ModelSerializer):
     assigned_to = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())  # Acepta ID del usuario
     assigned_to_name = serializers.CharField(source='assigned_to.username', read_only=True)  # Nombre del usuario
@@ -197,12 +204,11 @@ class ComplaintSerializer(serializers.ModelSerializer):
 
 ############################################################################################################    
 class JobAssignmentSerializer(serializers.ModelSerializer):
-    assigned_to = serializers.SerializerMethodField()  # Para incluir detalles del usuario asignado
-    order = serializers.SerializerMethodField()        # Para incluir detalles de la orden
+      
 
     class Meta:
         model = JobAssignment
-        fields = ['id', 'assigned_to', 'order', 'assigned_at', 'status']
+        fields = ['assigned_to', 'order', 'status'] 
         read_only_fields = ['assigned_at']
 
     def get_assigned_to(self, obj):

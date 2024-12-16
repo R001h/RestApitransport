@@ -1,5 +1,5 @@
-const OrderService = {
-    async getOrders() {
+async function GetOrders() {
+
         const token = localStorage.getItem('authToken');
         const response = await fetch('http://127.0.0.1:8000/order/', {
             method: 'GET',
@@ -14,7 +14,7 @@ const OrderService = {
         }
 
         return response.json();
-    }
-};
+}
 
-export default OrderService;
+
+export default GetOrders;

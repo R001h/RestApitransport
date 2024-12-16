@@ -11,6 +11,7 @@ import AdministracionVehiculos from './AdministracionVehiculos'; // Componente p
 import FormFeedback from './FormFeedback'; // Componente para feedback
 import FormOrderHistory from './FormOrderHistory'; // Componente para mostrar historial de órdenes
 import AsignarFlete from './AsignarFlete'; // Componente para asignar flete
+import ClientsList from './ClientList';
 
 const Sidebar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Estado para controlar si el sidebar está abierto
@@ -42,6 +43,8 @@ const Sidebar = () => {
                 return <FormOrderHistory />;
             case 'Register':
                 return <FormRegister />;
+            case 'ClientList':
+                return <ClientsList />;
             default:
                 return <h1>Welcome</h1>;
         }
@@ -120,6 +123,13 @@ const Sidebar = () => {
                     >
                         <FaSignOutAlt className="menu-icon" />
                         Registrar Cliente
+                    </li>
+                    <li
+                        className={`menu-item ${activeItem === 'ClientList' ? 'active' : ''}`}
+                        onClick={() => handleItemClick('ClientList')}
+                    >
+                        <FaSignOutAlt className="menu-icon" />
+                        Lista de Clientes
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'OrdersHistory' ? 'active' : ''}`}

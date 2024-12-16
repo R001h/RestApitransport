@@ -7,6 +7,9 @@ import guionnes from '../img/guionnes.jpeg'
 import nosara from '../img/nosara.jpg'
 import santamarta from '../img/santamarta.jpg'
 import arenales from '../img/arenales.jpg'
+import delicias from '../img/delicias.jpg'
+import santacruz from '../img/santacruz.jpg'
+
 const Bannermain = () => {
 
 
@@ -55,11 +58,11 @@ const Bannermain = () => {
       <p>Ofrecemos soluciones personalizadas según tus necesidades.</p>
     </div>
   </div>
-</section>
+</section> 
 
 <section className="info-section">
   <div className="info-banner">
-    <h2>Por qué elegirnos</h2>
+    <h2>Por que elegirnos</h2>
     <div className="info-card">
       <p className="info-paragraph">
         Ofrecemos una amplia gama de servicios de transporte: mudanzas, materiales de construcción, recolección de basura orgánica, tanquetas de agua, y retiro de escombros. Nuestros camiones están equipados con la tecnología necesaria para garantizar un traslado seguro y eficiente, cuidando cada detalle en el proceso.
@@ -77,7 +80,9 @@ const Bannermain = () => {
         { name: "Garza", url: garza },
         { name: "Ostional", url: ostional },
         { name: "Nosara", url: nosara },
-        { name: "Santa Marta", url: santamarta }
+        { name: "Santa Marta", url: santamarta },
+        { name: "Delicias", url: delicias },
+        { name: "Santa Cruz", url: santacruz }
       ].map((Guanacaste, index) => (
         <div key={index} className="province-card">
           <img src={Guanacaste.url} alt={Guanacaste.name} className="Guanacaste-image" />

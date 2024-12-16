@@ -32,8 +32,7 @@ function Navbar() {
         <nav className="nav">
           <ul className="nav-links">
             <Link to="/Servicios">Servicios</Link>
-            <Link to="/Tienda">Viajes</Link>
-            <Link to="/Contactos">Contáctenos</Link>
+            <Link to="/Contactos">Contacto</Link>
           </ul>
           {/* Mostrar botones según el estado de autenticación */}
           {!isAuthenticated && (

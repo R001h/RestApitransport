@@ -1,11 +1,12 @@
+// ClientService.js
 async function GetClients() {
     try {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('authToken'); // Obtener token del localStorage
         const response = await fetch('http://127.0.0.1:8000/clients/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`, // Agregar token a los headers
             },
         });
 
@@ -13,13 +14,13 @@ async function GetClients() {
             throw new Error('Error fetching clients');
         }
 
-        const clients = await response.json();
-        console.log('Fetched clients:', clients); // Asegúrate de loguear 'clients', no 'drivers'
-        return clients;
+        const clients = await response.json(); // Obtener los datos de clientes
+        console.log('Fetched clients:', clients); // Loguear los clientes
+        return clients; // Devolver los clientes
     } catch (error) {
-        console.error('Error fetching clients:', error);
-        throw error;
+        console.error('Error fetching clients:', error); // Manejo de errores
+        throw error; // Lanza el error para que sea capturado por quien llame la función
     }
 }
 
-export { GetClients };
+export { GetClients }; // Exportar la función

@@ -1,4 +1,4 @@
-import { FaSearch, FaHome, FaChartBar, FaCog, FaSignOutAlt } from 'react-icons/fa'; // Importamos los íconos de FontAwesome
+import { FaPlusCircle, FaEye, FaTasks, FaTruck, FaUserPlus, FaCar, FaComment, FaIdCard, FaUsers, FaHistory } from 'react-icons/fa'; // Importamos los íconos de FontAwesome
 import '../Style/Sidebar.css'; // Importamos los estilos CSS para el Sidebar
 import { useState } from "react";
 
@@ -11,7 +11,7 @@ import AdministracionVehiculos from './AdministracionVehiculos'; // Componente p
 import FormFeedback from './FormFeedback'; // Componente para feedback
 import FormOrderHistory from './FormOrderHistory'; // Componente para mostrar historial de órdenes
 import AsignarFlete from './AsignarFlete'; // Componente para asignar flete
-import ClientsList from './ClientList';
+import ClientsList from './ClientList'; // Componente para lista de clientes
 
 const Sidebar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Estado para controlar si el sidebar está abierto
@@ -55,87 +55,77 @@ const Sidebar = () => {
             <div className={`sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
                 <div className="sidebar-header">
                     <h2 className="sidebar-title">Transportes <br /> R&G</h2>
-                    <button className="menu-toggle" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-                        <span className="menu-icon">&#9776;</span>
-                    </button>
                 </div>
-                <div className="search-container">
-                    <input
-                        type="text"
-                        placeholder="Search..."
-                        className="search-input"
-                    />
-                    <FaSearch className="search-icon" />
-                </div>
+                
                 <ul className="sidebar-menu">
                     <li
                         className={`menu-item ${activeItem === 'CrearServicios' ? 'active' : ''}`}
                         onClick={() => handleItemClick('CrearServicios')}
                     >
-                        <FaHome className="menu-icon" />
+                        <FaPlusCircle className="menu-icon" />
                         Crear Servicio
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'MostrarServicios' ? 'active' : ''}`}
                         onClick={() => handleItemClick('MostrarServicios')}
                     >
-                        <FaHome className="menu-icon" />
+                        <FaEye className="menu-icon" />
                         Mostrar Servicio
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'CrearTarea' ? 'active' : ''}`}
                         onClick={() => handleItemClick('CrearTarea')}
                     >
-                        <FaChartBar className="menu-icon" />
+                        <FaTasks className="menu-icon" />
                         Crear Tarea
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'AsignarFlete' ? 'active' : ''}`}
                         onClick={() => handleItemClick('AsignarFlete')}
                     >
-                        <FaChartBar className="menu-icon" />
+                        <FaTruck className="menu-icon" />
                         Asignar Flete
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'CrearEmpleado' ? 'active' : ''}`}
                         onClick={() => handleItemClick('CrearEmpleado')}
                     >
-                        <FaHome className="menu-icon" />
+                        <FaUserPlus className="menu-icon" />
                         Crear Empleado
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'CrearVehiculo' ? 'active' : ''}`}
                         onClick={() => handleItemClick('CrearVehiculo')}
                     >
-                        <FaHome className="menu-icon" />
+                        <FaCar className="menu-icon" />
                         Crear Vehículo
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'Feedback' ? 'active' : ''}`}
                         onClick={() => handleItemClick('Feedback')}
                     >
-                        <FaCog className="menu-icon" />
+                        <FaComment className="menu-icon" />
                         Feedback
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'Register' ? 'active' : ''}`}
                         onClick={() => handleItemClick('Register')}
                     >
-                        <FaSignOutAlt className="menu-icon" />
+                        <FaIdCard className="menu-icon" />
                         Registrar Cliente
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'ClientList' ? 'active' : ''}`}
                         onClick={() => handleItemClick('ClientList')}
                     >
-                        <FaSignOutAlt className="menu-icon" />
+                        <FaUsers className="menu-icon" />
                         Lista de Clientes
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'OrdersHistory' ? 'active' : ''}`}
                         onClick={() => handleItemClick('OrdersHistory')}
                     >
-                        <FaSignOutAlt className="menu-icon" />
+                        <FaHistory className="menu-icon" />
                         Historial Registro
                     </li>
                 </ul>

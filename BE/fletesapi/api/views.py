@@ -160,7 +160,7 @@ class ClientListView(APIView):
             
             # Serializar los datos necesarios
             client_data = [
-                {"id": client.id, "username": client.username, "email": client.email}
+                {"id": client.id,"first_name": client.first_name,"last_name": client.last_name, "username": client.username, "email": client.email}
                 for client in clients
             ]
             

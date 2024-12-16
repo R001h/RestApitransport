@@ -25,7 +25,10 @@ const Bannermain = () => {
         />
         <div className="banner-content">
           <h1>Contrata el mejor servicio de mudanza en Costa Rica</h1>
-          <button className="banner-button">Solicita una cotización</button>
+        
+        </div>
+        <div className="banner-content">
+        <button className="banner-button">Solicita una cotización</button>
         </div>
       </section>
 

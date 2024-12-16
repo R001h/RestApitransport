@@ -1,50 +1,60 @@
 import React, { useEffect, useState } from 'react';
 import { GetClients } from '../Services/ClientService'; // Asegúrate de que la ruta sea correcta
+import '../Style/ClientList.css'; // Importamos los estilos CSS para el Sidebar
 
-function ClientsList() {
-  const [clients, setClients] = useState([]); // Estado para almacenar la lista de clientes
-  const [loading, setLoading] = useState(true); // Estado para controlar la carga
+const ClientList = () => {
+  const [clients, setClients] = useState([]); // Definir el estado correctamente
+  const [loading, setLoading] = useState(true); // Estado para manejar la carga de datos
   const [error, setError] = useState(null); // Estado para manejar errores
 
   useEffect(() => {
-    async function fetchClients() {
-      try {
-        const fetchedClients = await GetClients();
-        setClients(fetchedClients);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    }
+      const fetchClientsData = async () => {
+          try {
+              const fetchedClients = await GetClients(); // Llamar a la función GetClients
+              setClients(fetchedClients); // Asignar los datos obtenidos al estado
+          } catch (err) {
+              setError('Failed to fetch clients'); // Si ocurre un error, mostrarlo
+          } finally {
+              setLoading(false); // Cuando termine la carga, desactivar el loading
+          }
+      };
 
-    fetchClients();
-  }, []); // Ejecutar solo al montar el componente
+      fetchClientsData(); // Ejecutar la función para obtener los datos
+  }, []); // Solo se ejecutará una vez cuando el componente se monte
 
   if (loading) {
-    return <p>Cargando clientes...</p>;
+      return <p>Loading clients...</p>; // Mensaje de carga mientras se obtienen los datos
   }
 
   if (error) {
-    return <p>Error al cargar clientes: {error}</p>;
+      return <p>{error}</p>; // Mensaje de error si algo salió mal
   }
 
   return (
-    <div>
-      <h2>Lista de Clientes</h2>
-      {clients.length === 0 ? (
-        <p>No hay clientes disponibles.</p>
-      ) : (
-        <ul>
-          {clients.map((client) => (
-            <li key={client.id}>
-              <strong>{client.name}</strong> - {client.email}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+      <div>
+          <h2>Lista de Clientes</h2>
+          {clients.length > 0 ? (
+              <table className="client-table">
+                  <thead>
+                      <tr>
+                          <th>Nombre</th>
+                          <th>Correo</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {clients.map((client, index) => (
+                          <tr key={index}>
+                              <td>{client.first_name} {client.last_name}</td>
+                              <td>{client.email}</td>
+                          </tr>
+                      ))}
+                  </tbody>
+              </table>
+          ) : (
+              <p>No clients found</p>
+          )}
+      </div>
   );
-}
+};
 
-export default ClientsList;
+export default ClientList;

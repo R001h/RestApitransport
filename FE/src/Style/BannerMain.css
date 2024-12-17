@@ -29,18 +29,43 @@
   margin-bottom: 1rem;
   color: #ddd;
 }
-
-.banner-button {
+.bototn{
+  justify-content: center;
+}
+.banner-button1 {
   margin-top: 35px;
   padding: 1rem 1.5rem;
   font-size: 1rem;
-  width: 40%;
+  width: 100px;
   color: white;
   background-color: #007bff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  justify-self: center;
+  
+}.bototn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0; /* Opcional: Espaciado vertical */
 }
+
+.banner-button1 {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px; /* Redondeo de esquinas */
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.banner-button1:hover {
+  background-color: #0056b3; /* Color al pasar el mouse */
+}
+
 
 .banner-button:hover {
   background-color: #0056b3;

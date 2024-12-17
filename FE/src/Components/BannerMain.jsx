@@ -28,10 +28,11 @@ const Bannermain = () => {
         
         </div>
         <div className="banner-content">
-        <button className="banner-button">Solicita una cotización</button>
         </div>
       </section>
-
+      <div className="bototn">
+      <button className="banner-button1">Solicita una cotización</button>
+      </div>
      {/* Cards */}
 <section className="cards-section">
   <h2>Nuestros servicios destacados</h2>

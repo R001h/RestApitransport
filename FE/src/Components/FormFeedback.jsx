@@ -9,7 +9,7 @@ const Feedback = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [orders, setOrders] = useState([]);
-  const [selectedOrder, setSelectedOrder] = useState('');
+  const [selectedOrder,  setOrden] = useState('');
   // Cargar las reseñas al cargar el componente
   useEffect(() => {
     const fetchFeedbacks = async () => {
@@ -52,15 +52,20 @@ const Feedback = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+
+    const order = selectedOrder
     const feedback = {
       rating,
       comment,
-      order: 1,  // Asegúrate de que este id de order sea válido
+      order,  // Asegúrate de que este id de order sea válido
       client: 1, // Asegúrate de que este id de client sea válido
     };
 
     try {
       setLoading(true);
+
+   
+      
       const response = await FeedbackService.crearFeedback(feedback);
       setFeedbacks([...feedbacks, response]);
       setRating(0);
@@ -86,20 +91,22 @@ const Feedback = () => {
   };
 
 
-
+  function cargaOrder(e) {
+    console.log(e.target.value); 
+    setOrden(e.target.value)
+  }
+  
   const renderOrderOptions = () => {
-    return orders.map((order) => {
-        
-            return (
-                <option key={order.id} value={order.id}>
-                    {order.client_details.first_name}{order.contact_number}
-                    
-                </option>
-            );
-        
-        return null; // No renderizar si los datos están incompletos
-    });
-};
+    return orders
+      .filter(order => order.client_details?.first_name && order.contact_number) // Filtrar solo órdenes con datos completos
+      .map(order => (
+        <option key={order.id} value={order.id}>
+          {order.client_details.first_name} ({order.contact_number})
+        </option>
+      ));
+  };
+
+  
 
   return (
     <div>
@@ -122,10 +129,13 @@ const Feedback = () => {
         </div>
         <div>
         <label>Seleccione una Orden:</label>
-                <select value={selectedOrder} onChange={(e) => setSelectedOrder(e.target.value)}>
-                    <option value="">--Seleccione--</option>
-                    {renderOrderOptions()}
-                </select>
+        <select onChange={cargaOrder}>
+      <option value="" disabled selected>
+        Selecciona una orden
+      </option>
+      {renderOrderOptions()}
+    </select>
+  
         </div>
         <div>
           <label>Comentario:</label>

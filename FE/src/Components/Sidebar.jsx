@@ -12,6 +12,7 @@ import FormFeedback from './FormFeedback'; // Componente para feedback
 import FormOrderHistory from './FormOrderHistory'; // Componente para mostrar historial de órdenes
 import AsignarFlete from './AsignarFlete'; // Componente para asignar flete
 import ClientsList from './ClientList'; // Componente para lista de clientes
+import DriverList from './DriverList'; // Componente para lista de clientes
 
 const Sidebar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Estado para controlar si el sidebar está abierto
@@ -35,6 +36,8 @@ const Sidebar = () => {
                 return <AsignarFlete />;
             case 'CrearEmpleado':
                 return <FormEmployee />;
+            case 'DriversList':
+                return < DriverList/>;
             case 'CrearVehiculo':
                 return <AdministracionVehiculos />;
             case 'Feedback':
@@ -92,6 +95,13 @@ const Sidebar = () => {
                     >
                         <FaUserPlus className="menu-icon" />
                         Crear Empleado
+                    </li>
+                    <li
+                        className={`menu-item ${activeItem === 'DriverList' ? 'active' : ''}`}
+                        onClick={() => handleItemClick('DriverList')}
+                    >
+                        <FaUsers className="menu-icon" />
+                        Lista de Conductores
                     </li>
                     <li
                         className={`menu-item ${activeItem === 'CrearVehiculo' ? 'active' : ''}`}

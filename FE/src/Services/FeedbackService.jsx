@@ -35,13 +35,21 @@ const FeedbackService = {
 
   // Crear una nueva reseña
   crearFeedback: async (feedback) => {
+
+  
+
+
+
     try {
       const token = localStorage.getItem('authToken'); 
       const response = await fetch(API_URL, {
         method: 'POST',
-        headers: getHeaders(),
-        body: JSON.stringify(feedback),
-      });
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(feedback),
+        });
 
       if (!response.ok) {
         const errorDetails = await response.text();
